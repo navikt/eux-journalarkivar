@@ -1,0 +1,14 @@
+feilregistreringStatus:
+  type: string
+  description: Status på feilregistreringen utført av EUX
+  example: SATT_TIL_STATUS_AVBRYT
+  enum:
+    - SATT_TIL_STATUS_AVBRYT
+    - OPPGAVE_FLYTTET
+    - FEILREGISTRERING_FEILET
+    - OPPGAVEFLYTT_FEILET
+
+feilregistreringBeskrivelse:
+  type: string
+  description: >-
+    Kort beskrivelse på utfallet av forsøkt feilregistrering.

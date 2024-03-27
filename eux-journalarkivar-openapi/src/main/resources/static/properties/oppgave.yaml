@@ -1,0 +1,150 @@
+id:
+  type: integer
+  description: >
+    Syntetisk ID på oppgaven
+
+oppgavetype:
+  maxLength: 255
+  minLength: 0
+  type: string
+  description: >-
+    Kategorisering av hva slags oppgavetype det er. Hvilke oppgavetyper
+    som er tillatt for et gitt tema er definert i oppgavekodeverket.
+  example: JFR
+
+behandlingstype:
+  maxLength: 255
+  minLength: 0
+  type: string
+  description: >-
+    Kategoriserer oppgaven innenfor angitt tema. Tekstlig verdi
+    må inntil videre hentes fra felles kodeverk
+
+behandlingstema:
+  maxLength: 255
+  minLength: 0
+  type: string
+  description: >-
+    Kategoriserer oppgaven innenfor angitt tema. Tekstlig verdi
+    må inntil videre hentes fra felles kodeverk
+  example: ab0203
+
+tema:
+  maxLength: 255
+  minLength: 0
+  type: string
+  description: >-
+    Kategorisering av oppgaven. Hvilket tema/fagområde oppgaven tilhører
+  example: AAP
+
+journalpostId:
+  maxLength: 40
+  minLength: 0
+  type: string
+  description: Id for en journalpostreferanse
+  example: "84938201"
+
+journalpostIder:
+  type: array
+  items:
+    $ref: '#/journalpostId'
+  description: Ider på journalposter
+  example: ["84938201", "84938202"]
+
+tildeltEnhetsnr:
+  maxLength: 4
+  minLength: 4
+  type: string
+  description: Enheten oppgaven er tildelt
+  example: "4488"
+
+prioritet:
+  type: string
+  description: Kategorisering av oppgaven. Angir Hvilken prioritet oppgaven
+    har
+  example: NORM
+  enum:
+    - HOY
+    - NORM
+    - LAV
+
+beskrivelse:
+  type: string
+  description: >-
+    Kort beskrivelse av oppgaven med tilleggsinformasjon utover det kategoriseringen
+    kan tilby. Merk at denne ikke skal benyttes isteden for kategorisering,
+    da beskrivelse hverken er søkbart eller vises i alle tilfeller. Skal
+    ikke inneholde personsensitiv informasjon
+
+saksreferanse:
+  type: string
+  description: Angis for å knytte oppgaven til en sak i et fagsystem
+  example: "11231123"
+
+aktivDato:
+  type: string
+  description: ->
+    Benyttes for å legge en oppgave "på vent". Sette normalt
+    til dagens dato for nye oppgaver. Styrer visning i arbeidsflater, der
+    oppgaver med dato <= dagens dato vises.
+  format: date
+
+fristFerdigstillelse:
+  type: string
+  description: Oppgavens frist for ferdigstillelse.
+  format: date
+
+opprettetAvEnhetsnr:
+  maxLength: 4
+  minLength: 4
+  type: string
+  description: Hvilken enhet som har opprettet oppgaven
+  example: "0200"
+
+status:
+  type: string
+  description: Hvilken status oppgaven har. Konsumenter bør kun forholde seg
+    til dette ved behov for å skille mellom ferdigstilt og feilregistrert
+  example: OPPRETTET
+  enum:
+    - OPPRETTET
+    - AAPNET
+    - UNDER_BEHANDLING
+    - FERDIGSTILT
+    - FEILREGISTRERT
+
+ferdigstiltTidspunkt:
+  type: string
+  description: Tidspunktet oppgaven ble ferdigstilt iht. ISO-8601
+  format: date-time
+
+endretTidspunkt:
+  type: string
+  description: Tidspunktet oppgaven sist ble endret iht. ISO-8601
+  format: date-time
+
+tilordnetRessurs:
+  type: string
+  description: Navident for ressursen som skal tildeles oppgaven
+  example: Z998323
+
+behandlesAvApplikasjon:
+  maxLength: 40
+  minLength: 0
+  type: string
+  description: >-
+    Angis for å indikere hvilken applikasjon oppgaven skal behandles i
+  example: FS22
+
+ferdigstillingStatus:
+  type: string
+  description: Status på ferdigstillingen utført av EUX
+  example: OPPGAVE_FERDIGSTILT
+  enum:
+    - OPPGAVE_FERDIGSTILT
+    - FERDIGSTILLING_FEILET
+
+ferdigstillingBeskrivelse:
+  type: string
+  description: >-
+    Kort beskrivelse på utfallet av forsøkt ferdigstilling.

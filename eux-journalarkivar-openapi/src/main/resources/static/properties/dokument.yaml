@@ -1,0 +1,33 @@
+sedId:
+  type: string
+  format: uuid
+  description: >
+    Id på SED. Kjent som setId i Rina.
+
+sedVersjon:
+  type: integer
+  description: >
+    Versjon av sedId
+
+sedType:
+  type: string
+  minLength: 1
+  maxLength: 35
+  description: >
+    H001 etc.
+
+dokumentInfoId:
+  type: string
+  minLength: 9
+  maxLength: 9
+  pattern: '^\d{9}$'
+  description: >
+    Unit identifikator på et bestemt dokument i Joark.
+
+journalpostId:
+  type: string
+  minLength: 9
+  maxLength: 9
+  pattern: '^\d{9}$'
+  description: >
+    Id på journalpost i Joark.

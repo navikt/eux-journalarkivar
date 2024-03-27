@@ -1,0 +1,46 @@
+name: eux-journalarkivar-q1
+ingress: https://eux-journalarkivar-q1.intern.dev.nav.no
+
+application:
+  eux-neessi:
+    name: eux-neessi-q1
+    namespace: eessibasis
+
+  eux-fagmodul-journalfoering:
+    name: eux-fagmodul-journalfoering-q1
+    namespace: eessibasis
+
+  eux-oppgave:
+    name: eux-oppgave-q1
+    namespace: eessibasis
+
+  eux-nav-rinasak-datasync:
+    name: eux-nav-rinasak-datasync-q1
+    namespace: eessibasis
+
+  eux-nav-rinasak:
+    name: eux-nav-rinasak-q1
+    namespace: eessibasis
+
+client:
+  euxnavrinasak:
+    endpoint: http://eux-nav-rinasak-q1
+    scope: api://dev-gcp.eessibasis.eux-nav-rinasak-q1/.default
+
+  euxoppgave:
+    endpoint: http://eux-oppgave-q1
+    scope: api://dev-gcp.eessibasis.eux-oppgave-q1/.default
+
+  saf:
+    host: saf.dev-fss-pub.nais.io
+    endpoint: https://saf.dev-fss-pub.nais.io
+    scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
+
+  dokarkiv:
+    host: dokarkiv-q1.dev-fss-pub.nais.io
+    endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
+    scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
+
+cluster:
+  fss: dev-fss
+  gcp: dev-gcp

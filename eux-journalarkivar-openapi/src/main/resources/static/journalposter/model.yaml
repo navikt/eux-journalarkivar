@@ -1,0 +1,10 @@
+SettStatusAvbrytRequestOpenApiType:
+  type: object
+  required:
+    - journalpostIder
+  properties:
+    journalpostIder:
+      type: array
+      items:
+        $ref: '../properties/dokument.yaml#/journalpostId'
+      description: JournalpostIder

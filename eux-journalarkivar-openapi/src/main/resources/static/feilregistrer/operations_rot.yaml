@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Eux Journal API
+  summary: Feilregistrer
+  operationId: feilregistrerJournalposter
+  description: Feilregistrer journalposter tilhørende rinasak
+  parameters:
+    - name: rinasakId
+      in: path
+      required: true
+      schema:
+        $ref: '../properties/rinasak.yaml#/rinasakId'
+
+  responses:
+    '200':
+      description: Feilregistrert
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/RinasakFeilregistrerJournalposterResponsOpenApiType'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

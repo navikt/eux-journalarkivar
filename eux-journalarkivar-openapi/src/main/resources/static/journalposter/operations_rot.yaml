@@ -1,0 +1,26 @@
+post:
+  tags:
+    - Journalpost API
+  summary: Sett Status Avbryt
+  operationId: settStatusAvbryt
+  description: Sett alle journalposter til avbryt
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/SettStatusAvbrytRequestOpenApiType'
+
+  responses:
+    '204':
+      $ref: '../common/responses.yaml#/204'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

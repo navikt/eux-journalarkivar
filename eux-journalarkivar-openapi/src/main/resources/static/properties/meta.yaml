@@ -1,0 +1,23 @@
+opprettetTidspunkt:
+  type: string
+  format: date-time
+  description: Tidspunkt da entiteten ble opprettet.
+
+opprettetBruker:
+  type: string
+  description: Brukeren som opprettet entiteten. Kan være saksbehandler eller system.
+    
+versjon:
+  type: integer
+  description: >-
+    Brukes for å håndtere optimistisk låsing, hvor to brukere
+    har skrevet på samme oppgave. Hver gang det gjøres endring på en oppgave,
+    økes verdien av VERSJON med 1. Når en klient skal lagre endring på en
+    oppgave, sendes verdien av VERSJON oppgaven hadde da informasjon om
+    oppgaven som nå er endret ble hentet ut. Dersom verdien av VERSJON er
+    endret, har noen andre lagret oppgaven i mellomtiden, og oppgaven kan
+    ikke lagres. 409 Conflict vil returneres fra tjenesten. Under oppretting
+    av oppgave trenger man ikke å spesifisere noen verdi for dette feltet,
+    oppgaven vil starte på versjon 1
+  format: int32
+  example: 1

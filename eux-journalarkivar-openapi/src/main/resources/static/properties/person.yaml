@@ -1,0 +1,33 @@
+aktoerId:
+  type: string
+  pattern: '^\d{13}$'
+  minLength: 13
+  maxLength: 13
+  description: >-
+    Automatisk generert NAV-intern ID for en person som kan brukes 
+    som koblingsnøkkel for alle identer for en person. Alle personer 
+    har en og bare en aktørId. pr 7.8.23 starter alle aktør ID'er fra 
+    TPS på 1 og aktør ID'er allokert av PDL på 2. En aktør id kan 
+    opphøre å være gyldig ved splitt eller merge av en person.
+
+fnr:
+  type: string
+  pattern: '^\d{11}$'
+  minLength: 11
+  maxLength: 11
+  description: >-
+    Norsk fødselsnummer, d-nummer eller NPID. D-nummer og fødselsnummer opprettes i Folkeregisteret, 
+    og kalles folkeregisteridentifikator. NPID er en identifikator som opprettes i PDL. NPID 
+    ble tidligere kalt BOST-nummer eller BNR. Opprinnelig ble nummeret brukt i bidragssaker. I PDL 
+    er det mulig å bruke NPID i andre tilfeller der man ikke trenger eller man ikke kan få DNR.
+
+personident:
+  maxLength: 13
+  minLength: 11
+  type: string
+  description: >-
+    ident for person oppgaven gjelder, dvs. fnr, dnr, npid eller
+    aktørid. Kan ikke nullstilles. Kun én av personident eller orgnr kan
+    angis. Merk at det kun er i helt spesielle tilfeller ident skal endres,
+    i.e ifm journalføring
+  example: "12345678911"

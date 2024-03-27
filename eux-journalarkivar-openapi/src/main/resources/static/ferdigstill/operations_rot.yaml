@@ -1,0 +1,26 @@
+patch:
+  tags:
+    - Eux Journal API
+  summary: Ferdigstill
+  operationId: ferdigstillJournalpost
+  description: Ferdigstiller journalposten i joark
+  parameters:
+    - name: journalpostId
+      in: path
+      required: true
+      schema:
+        $ref: '../properties/dokument.yaml#/journalpostId'
+
+  responses:
+    '204':
+      $ref: '../common/responses.yaml#/204'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

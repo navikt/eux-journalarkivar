@@ -1,0 +1,140 @@
+'201':
+  content: { }
+  description: >
+    Created. The request has been fulfilled, resulting in the creation of a new resource.
+
+'204':
+  content: { }
+  description: >
+    No content. The server successfully processed the request, and is not returning any content.
+
+'400':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+      examples:
+        invalidRequest:
+          value:
+            message: The request is invalid.
+            errorKey: INVALID_REQUEST
+            originatingSystem: EUX
+            constraintViolations: { }
+          summary: The request is invalid
+        validation:
+          value:
+            timestamp: "2023-11-28T13:59:53.57164"
+            errors: [
+              {
+                "field": "initiellFagsak.fnr",
+                "defaultMessage": "must match \"^\\d{11}$\"",
+                "rejectedValue": "123"
+              },
+              {
+                "field": "initiellFagsak.fnr",
+                "defaultMessage": "size must be between 11 and 11",
+                "rejectedValue": "123"
+              }
+            ]
+          summary: Invalid request with constraint violations
+  description: >
+    Bad Request. The server cannot or will not process the request due to an apparent client error.
+
+'401':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+      examples:
+        invalidRequest:
+          value:
+            message: >
+              The client request has not been completed because it lacks valid authentication
+              credentials for the requested resource.
+            errorKey: UNAUTHORIZED
+            originatingSystem: EUX
+          summary: >
+            The client request has not been completed because it lacks valid authentication
+            credentials for the requested resource.
+  description: >
+    Unauthorized.
+
+'403':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+  description: >
+    Forbidden.
+
+'404':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+      examples:
+        notFound:
+          value:
+            message: The requested resource was not found.
+            errorKey: NOT_FOUND
+            originatingSystem: EUX
+          summary: The requested resource was not found
+  description: >
+    Not found.
+
+'409':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+  description: >
+    Conflict.
+
+'500':
+  content:
+    'application/json':
+      schema:
+        $ref: '../common/responses.yaml#/ResponseStateType'
+      examples:
+        internalServerError:
+          value:
+            message: The server failed to fulfil a request due to an internal server error.
+            errorKey: INTERNAL_SERVER_ERROR
+            originatingSystem: EUX
+          summary: The server failed to fulfil a request due to an internal server error
+  description: >
+    Internal server error.
+
+ResponseStateType:
+  type: object
+  properties:
+    message:
+      type: string
+      description: >
+        Description of the returned state. This field contains data intended for debugging purposes.
+    errorKey:
+      type: string
+      description: |
+        The error key gives a more granular description of the returned state. Valid values include,
+        but are not limited to:
+        * `NOT_FOUND` - The requested resource is not found. Returned with http status code 404.
+        * `DUPLICATE_ENTRY` - The entity attempted to post is already present. Returned with http status code 409.
+        * `OPTIMISTIC_LOCKING` - Operation failed because another client has updated or deleted the record.
+          Returned with http status code 409
+        * `INVALID_REQUEST` - The request is invalid. Returned with http status code 400.
+        * `INTERNAL_SERVER_ERROR` - The server failed to fulfil a request. Returned with http status code 500.
+    originatingSystem:
+      type: string
+      description: >
+        Identifier of the system responsible for the returned state. May be internal ace deployment
+        id's or reference to an external system.
+    constraintViolations:
+      type: object
+      description: >
+        List constraint violations with a reason. This field is used when request parameters are not
+        fulfilled linked to http status code 400.
+  example:
+    message: The requested resource was not found.
+    errorKey: NOT_FOUND
+    originatingSystem: EUX
+    constraintViolations: { }

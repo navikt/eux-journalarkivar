@@ -1,0 +1,93 @@
+kind: Application
+apiVersion: nais.io/v1alpha1
+metadata:
+  name: {{ name }}
+  namespace: eessibasis
+  labels:
+    team: eessibasis
+spec:
+  image: {{ image }}
+  ingresses:
+    - {{ ingress }}
+  liveness:
+    path: /actuator/health
+    port: 8080
+    initialDelay: 40
+    timeout: 90
+  port: 8080
+  prometheus:
+    enabled: true
+    path: /actuator/prometheus
+  readiness:
+    path: /actuator/health
+    port: 8080
+    initialDelay: 40
+    timeout: 90
+  replicas:
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      cpu: "1"
+      memory: 512Mi
+    requests:
+      cpu: 800m
+      memory: 512Mi
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true
+      replyURLs:
+        - "{{ ingress }}/callback"
+      claims:
+        extra:
+          - "NAVident"
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /api/**
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+#  accessPolicy:
+#    inbound:
+#      rules:
+#        - application: {{ application.eux-neessi.name }}
+#          namespace: {{ application.eux-neessi.namespace }}
+#          cluster: {{ cluster.gcp }}
+#        - application: {{ application.eux-fagmodul-journalfoering.name }}
+#          namespace: {{ application.eux-fagmodul-journalfoering.namespace }}
+#          cluster: {{ cluster.fss }}
+#        - application: {{ application.eux-nav-rinasak-datasync.name }}
+#          namespace: {{ application.eux-nav-rinasak-datasync.namespace }}
+#          cluster: {{ cluster.gcp }}
+#    outbound:
+#      external:
+#        - host: {{ client.saf.host }}
+#        - host: {{ client.dokarkiv.host }}
+#      rules:
+#        - application: {{ application.eux-oppgave.name }}
+#        - application: {{ application.eux-nav-rinasak.name }}
+  env:
+    - name: CLIENT_EUXNAVRINASAK_ENDPOINT
+      value: {{ client.euxnavrinasak.endpoint }}
+    - name: CLIENT_EUXNAVRINASAK_SCOPE
+      value: {{ client.euxnavrinasak.scope }}
+
+    - name: CLIENT_EUXOPPGAVE_ENDPOINT
+      value: {{ client.euxoppgave.endpoint }}
+    - name: CLIENT_EUXOPPGAVE_SCOPE
+      value: {{ client.euxoppgave.scope }}
+
+    - name: CLIENT_SAF_ENDPOINT
+      value: {{ client.saf.endpoint }}
+    - name: CLIENT_SAF_SCOPE
+      value: {{ client.saf.scope }}
+
+    - name: CLIENT_DOKARKIV_ENDPOINT
+      value: {{ client.dokarkiv.endpoint }}
+    - name: CLIENT_DOKARKIV_SCOPE
+      value: {{ client.dokarkiv.scope }}
