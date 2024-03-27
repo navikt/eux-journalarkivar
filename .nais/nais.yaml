@@ -52,18 +52,12 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: java
-#  accessPolicy:
-#    inbound:
-#      rules:
-#        - application: {{ application.eux-neessi.name }}
-#          namespace: {{ application.eux-neessi.namespace }}
-#          cluster: {{ cluster.gcp }}
-#        - application: {{ application.eux-fagmodul-journalfoering.name }}
-#          namespace: {{ application.eux-fagmodul-journalfoering.namespace }}
-#          cluster: {{ cluster.fss }}
-#        - application: {{ application.eux-nav-rinasak-datasync.name }}
-#          namespace: {{ application.eux-nav-rinasak-datasync.namespace }}
-#          cluster: {{ cluster.gcp }}
+  accessPolicy:
+    inbound:
+      rules:
+        - application: {{ application.eux-journalarkivar-naisjob.name }}
+          namespace: {{ application.eux-journalarkivar-naisjob.namespace }}
+          cluster: {{ cluster.gcp }}
 #    outbound:
 #      external:
 #        - host: {{ client.saf.host }}
