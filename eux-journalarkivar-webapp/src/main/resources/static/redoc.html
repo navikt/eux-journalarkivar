@@ -16,7 +16,7 @@
 <script>
     const apiYaml = location
         .search
-        .split('apiSpec=')[1] ? location.search.split('apiSpec=')[1] : 'eux-journal-v1.yaml';
+        .split('apiSpec=')[1] ? location.search.split('apiSpec=')[1] : 'eux-journalarkivar-v1.yaml';
     document.write(`<redoc untrustedSpec=\"true\" spec-url='/${apiYaml}'></redoc>`);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
