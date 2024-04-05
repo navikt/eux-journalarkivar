@@ -31,6 +31,7 @@ class FerdigstillJournalposterService(
         }
 
     fun ferdigstillJournalpost(journalstatus: EuxSedJournalstatus) {
+        log.info { "henter rinasak ${journalstatus.rinasakId}" }
         val rinasak = euxRinaApiClient.euxRinaSakOversikt(journalstatus.rinasakId)
         safClient.dokumentoversiktBrukerStringTest(rinasak.fnr!!)
     }
