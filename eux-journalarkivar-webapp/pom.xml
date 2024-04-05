@@ -114,6 +114,12 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.eux.journalarkivar</groupId>
+            <artifactId>eux-journalarkivar-service</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

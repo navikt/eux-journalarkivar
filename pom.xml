@@ -10,7 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>eux-journalarkivar-model</module>
         <module>eux-journalarkivar-openapi</module>
+        <module>eux-journalarkivar-integration</module>
+        <module>eux-journalarkivar-service</module>
         <module>eux-journalarkivar-webapp</module>
     </modules>
 
