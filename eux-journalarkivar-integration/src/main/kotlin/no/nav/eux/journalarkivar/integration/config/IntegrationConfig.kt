@@ -37,6 +37,10 @@ class IntegrationConfig {
         restTemplate(components, "eux-nav-rinasak")
 
     @Bean
+    fun euxRinaApiRestTemplate(components: RestTemplateComponents) =
+        restTemplate(components, "eux-rina-api")
+
+    @Bean
     fun safRestTemplate(components: RestTemplateComponents) =
         restTemplate(components, "saf")
 
