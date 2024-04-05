@@ -35,6 +35,10 @@ client:
     endpoint: http://eux-oppgave
     scope: api://prod-gcp.eessibasis.eux-oppgave/.default
 
+  euxrinaapi:
+    endpoint: http://eux-nav-rinasak
+    scope: api://prod-gcp.eessibasis.eux-nav-rinasak/.default
+
   saf:
     host: saf.prod-fss-pub.nais.io
     endpoint: https://saf.prod-fss-pub.nais.io

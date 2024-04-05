@@ -69,6 +69,11 @@ spec:
     - name: CLIENT_EUXOPPGAVE_SCOPE
       value: {{ client.euxoppgave.scope }}
 
+    - name: CLIENT_EUXRINAAPI_ENDPOINT
+      value: {{ client.euxrinaapi.endpoint }}
+    - name: CLIENT_EUXRINAAPI_SCOPE
+      value: {{ client.euxrinaapi.scope }}
+
     - name: CLIENT_SAF_ENDPOINT
       value: {{ client.saf.endpoint }}
     - name: CLIENT_SAF_SCOPE

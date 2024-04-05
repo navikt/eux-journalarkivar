@@ -13,7 +13,7 @@ import kotlin.time.measureTimedValue
 
 @Component
 class EuxRinaApiClient(
-    @Value("\${endpoint.rinaapi}")
+    @Value("\${endpoint.euxrinaapi}")
     val euxRinaApiUrl: String,
     val euxRinaApiRestTemplate: RestTemplate
 ) {

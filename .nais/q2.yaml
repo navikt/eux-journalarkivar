@@ -35,6 +35,10 @@ client:
     endpoint: http://eux-oppgave-q2
     scope: api://dev-gcp.eessibasis.eux-oppgave-q2/.default
 
+  euxrinaapi:
+    endpoint: https://eux-rina-api-q2.dev-fss-pub.nais.io
+    scope: api://dev-fss.eessibasis.eux-rina-api-q2/.default
+
   saf:
     host: saf-q2.dev-fss-pub.nais.io
     endpoint: https://saf-q2.dev-fss-pub.nais.io
