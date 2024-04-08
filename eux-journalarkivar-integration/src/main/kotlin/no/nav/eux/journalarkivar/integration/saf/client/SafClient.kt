@@ -29,7 +29,7 @@ class SafClient(
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .body<GraphQlQuery>(graphQlQuery)
-        log.info("Henter SAF tilknyttede journalposter for bruker")
+        log.info { "Henter SAF tilknyttede journalposter for bruker" }
         val response = safRestTemplate
             .exchange(request, SafDokumentoversiktBrukerRoot::class.java)
         return if (response.statusCode.is2xxSuccessful) {
@@ -37,7 +37,7 @@ class SafClient(
                 .body
                 ?: throw RuntimeException("feilet mot saf tilknyttede journalposter, men med 200")
         } else {
-            log.error("Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}")
+            log.error { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
             throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
         }
     }
@@ -58,7 +58,7 @@ class SafClient(
         return if (response.statusCode.is2xxSuccessful) {
             response.body
         } else {
-            log.info("Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}")
+            log.info { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
             throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
         }
     }
@@ -69,7 +69,7 @@ class SafClient(
                 .data
                 .saker
         } catch (e: RuntimeException) {
-            log.error("Kunne ikke hente saker fra SAF på fnr", e)
+            log.error(e) { "Kunne ikke hente saker fra SAF på fnr" }
             emptyList()
         }
 
@@ -77,12 +77,12 @@ class SafClient(
         val saker = safSaker(fnr)
         val sakMedFagsakId = saker.firstOrNull { it.arkivsaksnummer == fagsakId }
         return if (saker.isEmpty()) {
-            log.error("Tom liste fra SAF for fnr og fagsakId $fagsakId")
+            log.error { "Tom liste fra SAF for fnr og fagsakId $fagsakId" }
             null
         } else if (sakMedFagsakId != null) {
             sakMedFagsakId
         } else {
-            log.error("Treff mot SAF saker på fnr (${saker.size}), men uten fagsakId $fagsakId")
+            log.error { "Treff mot SAF saker på fnr (${saker.size}), men uten fagsakId $fagsakId" }
             null
         }
     }
@@ -106,16 +106,18 @@ class SafClient(
                 ?.data
                 ?.journalpost ?: throw RuntimeException("feilet mot saf, men med 200")
         } else {
-            log.info("Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}")
+            log.info { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
             throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
         }
     }
 
-    fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
+    fun tilknyttedeJournalposter(dokumentInfoId: String): List<SafJournalpost> =
         tilknyttedeJournalposterRoot(dokumentInfoId)
             .data
             .tilknyttedeJournalposter
-            .firstOrNull()
+
+    fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
+        tilknyttedeJournalposter(dokumentInfoId).firstOrNull()
 
     fun tilknyttedeJournalposterRoot(dokumentInfoId: String): SafTilknyttedeJournalposterRoot {
         val graphQlQuery = tilknyttedeJournalposterQuery(dokumentInfoId)
@@ -128,7 +130,7 @@ class SafClient(
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .body<GraphQlQuery>(graphQlQuery)
-        log.info("Henter SAF tilknyttede journalposter for dokument info id: $dokumentInfoId")
+        log.info { "Henter SAF tilknyttede journalposter for dokument info id: $dokumentInfoId" }
         val response = safRestTemplate
             .exchange(request, SafTilknyttedeJournalposterRoot::class.java)
         return if (response.statusCode.is2xxSuccessful) {
@@ -136,7 +138,7 @@ class SafClient(
                 .body
                 ?: throw RuntimeException("feilet mot saf tilknyttede journalposter, men med 200")
         } else {
-            log.error("Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}")
+            log.error { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
             throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
         }
     }

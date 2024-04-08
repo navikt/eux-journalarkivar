@@ -33,6 +33,10 @@ class IntegrationConfig {
         restTemplate(components, "eux-oppgave")
 
     @Bean
+    fun euxJournalRestTemplate(components: RestTemplateComponents) =
+        restTemplate(components, "eux-journal")
+
+    @Bean
     fun euxNavRinasakRestTemplate(components: RestTemplateComponents) =
         restTemplate(components, "eux-nav-rinasak")
 

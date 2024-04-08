@@ -40,4 +40,8 @@ class EuxNavRinasakClient(
             throw RuntimeException("Fant ikke rinasak $rinasakId på: $euxNavRinasakUrl")
         return entity.body!!
     }
+
+    fun put(euxSedJournalstatus: EuxSedJournalstatus) {
+
+    }
 }

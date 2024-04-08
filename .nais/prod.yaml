@@ -39,6 +39,10 @@ client:
     endpoint: http://eux-oppgave
     scope: api://prod-gcp.eessibasis.eux-oppgave/.default
 
+  euxjournal:
+    endpoint: http://eux-journal
+    scope: api://prod-gcp.eessibasis.eux-journal/.default
+
   euxrinaapi:
     host: eux-rina-api.prod-fss-pub.nais.io
     endpoint: https://eux-rina-api.prod-fss-pub.nais.io

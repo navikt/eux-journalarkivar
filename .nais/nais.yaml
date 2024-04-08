@@ -77,6 +77,11 @@ spec:
     - name: CLIENT_EUXOPPGAVE_SCOPE
       value: {{ client.euxoppgave.scope }}
 
+    - name: CLIENT_EUXJOURNAL_ENDPOINT
+      value: {{ client.euxjournal.endpoint }}
+    - name: CLIENT_EUXJOURNAL_SCOPE
+      value: {{ client.euxjournal.scope }}
+
     - name: CLIENT_EUXRINAAPI_ENDPOINT
       value: {{ client.euxrinaapi.endpoint }}
     - name: CLIENT_EUXRINAAPI_SCOPE

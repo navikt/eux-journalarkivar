@@ -67,3 +67,4 @@ endpoint:
   euxrinaapi: ${CLIENT_EUXRINAAPI_ENDPOINT}
   saf: ${CLIENT_SAF_ENDPOINT}
   dokarkiv: ${CLIENT_DOKARKIV_ENDPOINT}
+  euxjournal: ${CLIENT_EUXJOURNAL_ENDPOINT}
