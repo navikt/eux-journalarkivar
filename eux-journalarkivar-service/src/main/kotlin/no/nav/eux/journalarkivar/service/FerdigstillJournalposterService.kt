@@ -21,6 +21,7 @@ class FerdigstillJournalposterService(
         log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
         euxSedJournalstatuser.forEach { tryFerdigstillJournalpost(it) }
         log.info { "ferdigstilling av journalposter gjennomført" }
+
     }
 
     fun tryFerdigstillJournalpost(journalstatus: EuxSedJournalstatus) =

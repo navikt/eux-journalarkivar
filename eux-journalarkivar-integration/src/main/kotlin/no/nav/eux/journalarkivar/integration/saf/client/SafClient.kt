@@ -234,7 +234,10 @@ fun tilknyttedeJournalposterQuery(dokumentInfoId: String) = GraphQlQuery(
 
 fun dokumentoversiktBrukerQuery(fnr: String) = GraphQlQuery(
     """query {
-          dokumentoversiktBruker(brukerId: { id: "$fnr", type:FNR } ) {
+          dokumentoversiktBruker(
+            brukerId: { id: "$fnr", type:FNR },
+            foerste: 1000
+          ) {
             journalposter {
               journalpostId
               tittel
