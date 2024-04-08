@@ -34,6 +34,13 @@ class FerdigstillJournalposterService(
     fun ferdigstillJournalpost(journalstatus: EuxSedJournalstatus) {
         log.info { "henter rinasak ${journalstatus.rinasakId}" }
         val rinasak = euxRinaApiClient.euxRinaSakOversikt(journalstatus.rinasakId)
-        safClient.dokumentoversiktBrukerStringTest(rinasak.fnr!!)
+        val journalposter = safClient
+            .dokumentoversiktBrukerRoot(rinasak.fnr!!)
+            .data
+            .dokumentoversiktBruker
+            .journalposter
+        log.info { "${journalposter.size} journalposter" }
+        log.info { journalposter.first().journalpostId }
+        log.info { journalposter.first().eksternReferanseId }
     }
 }

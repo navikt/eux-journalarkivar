@@ -18,28 +18,6 @@ class SafClient(
 
     val log = logger {}
 
-    fun dokumentoversiktBrukerStringTest(fnr: String) {
-        val graphQlQuery = dokumentoversiktBrukerQuery(fnr)
-        val request = RequestEntity
-            .post(
-                UriComponentsBuilder
-                    .fromHttpUrl(safUrl)
-                    .path("/graphql").build().toUri()
-            )
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body<GraphQlQuery>(graphQlQuery)
-        log.info("Henter SAF tilknyttede journalposter for bruker")
-        val response = safRestTemplate
-            .exchange(request, String::class.java)
-        return if (response.statusCode.is2xxSuccessful) {
-            log.info { "Body fra Saf: ${response.body}" }
-        } else {
-            log.error("Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}")
-            throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
-        }
-    }
-
     fun dokumentoversiktBrukerRoot(fnr: String): SafDokumentoversiktBrukerRoot {
         val graphQlQuery = dokumentoversiktBrukerQuery(fnr)
         val request = RequestEntity
