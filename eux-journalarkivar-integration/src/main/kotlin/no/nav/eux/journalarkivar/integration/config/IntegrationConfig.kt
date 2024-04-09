@@ -49,12 +49,8 @@ class IntegrationConfig {
         restTemplate(components, "saf")
 
     @Bean
-    fun dokarkivRestTemplatePrivateKeyJwt(components: RestTemplateComponents) =
-        restTemplate(components, "dokarkiv-private-key-jwt")
-
-    @Bean
-    fun dokarkivRestTemplateClientSecretBasic(components: RestTemplateComponents) =
-        restTemplate(components, "dokarkiv-client-secret-basic")
+    fun dokarkivRestTemplate(components: RestTemplateComponents) =
+        restTemplate(components, "dokarkiv")
 
     fun restTemplate(components: RestTemplateComponents, appName: String): RestTemplate {
         val clientProperties: ClientProperties = components.clientConfigurationProperties
