@@ -16,6 +16,7 @@ import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivSak
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
+import no.nav.eux.journalarkivar.model.exception.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
 
 @Service
@@ -39,8 +40,10 @@ class FerdigstillJournalposterService(
         try {
             mdc(rinasakId = rinasakId, sedId = sedId, sedVersjon = sedVersjon)
             ferdigstillJournalpost()
+        } catch (e: SakUtenFerdigstilteJournalposterException) {
+            log.info { e.message }
         } catch (e: Exception) {
-            log.error(e) { "Feil ved ferdigstilling av journalpost" }
+            log.error(e) { "Kunne ikke ferdigstille journalpost" }
         }
 
     fun EuxSedJournalstatus.ferdigstillJournalpost() {
@@ -81,11 +84,10 @@ class FerdigstillJournalposterService(
     fun SafJournalpost.ferdigstillJournalpost(
         navRinasak: EuxNavRinasak,
     ) {
-        val ferdigstiltJournalpost = navRinasak.firstFerdigstiltJournalpostOrNull()
-        when {
-            ferdigstiltJournalpost != null -> this ferdigstillMed ferdigstiltJournalpost
-            else -> log.info { "${navRinasak.rinasakId} har ikke noen ferdigstilte journalposter" }
-        }
+        val ferdigstiltJournalpost = navRinasak
+            .firstFerdigstiltJournalpostOrNull()
+            ?: throw SakUtenFerdigstilteJournalposterException()
+        this ferdigstillMed ferdigstiltJournalpost
     }
 
     fun EuxSedJournalstatus.ferdigstillJournalpostUtenNavRinasak() {
