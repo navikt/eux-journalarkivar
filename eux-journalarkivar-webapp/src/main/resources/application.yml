@@ -64,7 +64,7 @@ no.nav.security.jwt:
 endpoint:
   euxnavrinasak: ${CLIENT_EUXNAVRINASAK_ENDPOINT}
   euxoppgave: ${CLIENT_EUXOPPGAVE_ENDPOINT}
+  euxjournal: ${CLIENT_EUXJOURNAL_ENDPOINT}
   euxrinaapi: ${CLIENT_EUXRINAAPI_ENDPOINT}
   saf: ${CLIENT_SAF_ENDPOINT}
   dokarkiv: ${CLIENT_DOKARKIV_ENDPOINT}
-  euxjournal: ${CLIENT_EUXJOURNAL_ENDPOINT}

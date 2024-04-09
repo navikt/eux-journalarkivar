@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.saf.model
+package no.nav.eux.journalarkivar.integration.external.saf.model
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
 

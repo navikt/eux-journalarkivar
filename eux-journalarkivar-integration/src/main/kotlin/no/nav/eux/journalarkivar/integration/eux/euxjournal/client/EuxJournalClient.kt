@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.euxjournal.client
+package no.nav.eux.journalarkivar.integration.eux.euxjournal.client
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
@@ -10,7 +10,7 @@ import java.net.URI
 
 @Component
 class EuxJournalClient(
-    @Value("\${endpoint.journal}")
+    @Value("\${endpoint.euxjournal}")
     val journalUrl: String,
     val euxJournalRestTemplate: RestTemplate
 ) {

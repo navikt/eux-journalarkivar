@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.dokarkiv.model
+package no.nav.eux.journalarkivar.integration.external.dokarkiv.model
 
 data class DokarkivJournalpostOppdatering(
     val tema: String,

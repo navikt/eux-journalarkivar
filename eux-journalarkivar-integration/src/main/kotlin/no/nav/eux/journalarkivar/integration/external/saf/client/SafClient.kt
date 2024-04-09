@@ -1,6 +1,7 @@
-package no.nav.eux.journalarkivar.integration.saf.client
+package no.nav.eux.journalarkivar.integration.external.saf.client
 
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
+import no.nav.eux.journalarkivar.integration.external.saf.model.*
 import no.nav.eux.journalarkivar.integration.saf.model.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON

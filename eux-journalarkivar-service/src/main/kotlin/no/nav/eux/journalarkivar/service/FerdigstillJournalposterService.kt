@@ -1,21 +1,21 @@
 package no.nav.eux.journalarkivar.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
-import no.nav.eux.journalarkivar.integration.dokarkiv.client.DokarkivClient
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivBruker
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivBrukerType
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivJournalpostOppdatering
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivSakOppdatering
-import no.nav.eux.journalarkivar.integration.euxjournal.client.EuxJournalClient
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.client.DokarkivClient
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBruker
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBrukerType
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdatering
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivSakOppdatering
+import no.nav.eux.journalarkivar.integration.eux.euxjournal.client.EuxJournalClient
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.client.EuxNavRinasakClient
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxSedJournalstatus
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxSedJournalstatus.Status.JOURNALFOERT
 import no.nav.eux.journalarkivar.integration.euxrinaapi.client.EuxRinaApiClient
-import no.nav.eux.journalarkivar.integration.saf.client.SafClient
-import no.nav.eux.journalarkivar.integration.saf.model.SafJournalpost
-import no.nav.eux.journalarkivar.integration.saf.model.SafSak
+import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
 import org.springframework.stereotype.Service
 
 @Service

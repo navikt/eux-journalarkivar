@@ -1,8 +1,8 @@
-package no.nav.eux.journalarkivar.integration.dokarkiv.client
+package no.nav.eux.journalarkivar.integration.external.dokarkiv.client
 
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivJournalpostOppdatering
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivJournalpostOppdateringRespons
-import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivJournalpostSakOppdatering
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdatering
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdateringRespons
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostSakOppdatering
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
