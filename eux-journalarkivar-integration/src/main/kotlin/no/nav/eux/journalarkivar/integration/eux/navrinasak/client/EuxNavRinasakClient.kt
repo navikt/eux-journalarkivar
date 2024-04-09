@@ -1,12 +1,12 @@
-package no.nav.eux.journalarkivar.integration.euxnavrinasak.client
+package no.nav.eux.journalarkivar.integration.eux.navrinasak.client
 
 import no.nav.eux.journalarkivar.integration.config.get
 import no.nav.eux.journalarkivar.integration.config.post
-import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxNavRinasak
-import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxSedJournalstatus
-import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxSedJournalstatus.Status.UKJENT
-import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.SedJournalstatusSearchCriteriaType
-import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.SedJournalstatuserSearchResponseType
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.UKJENT
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.SedJournalstatusSearchCriteriaType
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.SedJournalstatuserSearchResponseType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component

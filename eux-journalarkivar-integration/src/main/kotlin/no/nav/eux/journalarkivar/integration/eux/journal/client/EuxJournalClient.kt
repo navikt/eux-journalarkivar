@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.eux.euxjournal.client
+package no.nav.eux.journalarkivar.integration.eux.journal.client
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType

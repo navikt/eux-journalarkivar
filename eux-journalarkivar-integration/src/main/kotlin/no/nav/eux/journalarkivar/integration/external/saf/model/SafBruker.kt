@@ -1,4 +1,4 @@
-package eux.nav.rinasak.datasync.integration.saf
+package no.nav.eux.journalarkivar.integration.external.saf.model
 
 data class SafBruker(
     val id: String,

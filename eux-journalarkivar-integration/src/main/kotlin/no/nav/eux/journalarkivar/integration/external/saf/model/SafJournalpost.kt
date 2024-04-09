@@ -1,7 +1,5 @@
 package no.nav.eux.journalarkivar.integration.external.saf.model
 
-import eux.nav.rinasak.datasync.integration.saf.*
-
 data class SafJournalpost(
     val journalpostId: String,
     val journalposttype: SafJournalposttype = SafJournalposttype.UKJENT,

@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.euxnavrinasak.model
+package no.nav.eux.journalarkivar.integration.eux.navrinasak.model
 
 data class SedJournalstatuserSearchResponseType(
     val sedJournalstatuser: List<EuxSedJournalstatus>

@@ -1,6 +1,6 @@
-package no.nav.eux.journalarkivar.integration.euxrinaapi.client
+package no.nav.eux.journalarkivar.integration.eux.rinaapi.client
 
-import no.nav.eux.journalarkivar.integration.euxrinaapi.model.EuxRinaSakOversiktV3
+import no.nav.eux.journalarkivar.integration.eux.rinaapi.model.EuxRinaSakOversiktV3
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
-import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 
 @Component

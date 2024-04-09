@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.euxrinaapi.model
+package no.nav.eux.journalarkivar.integration.eux.rinaapi.model
 
 data class EuxRinaSakOversiktV3(
     val fnr: String?,

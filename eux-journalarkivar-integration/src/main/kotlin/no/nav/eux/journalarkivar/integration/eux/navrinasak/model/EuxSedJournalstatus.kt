@@ -1,4 +1,4 @@
-package no.nav.eux.journalarkivar.integration.euxnavrinasak.model
+package no.nav.eux.journalarkivar.integration.eux.navrinasak.model
 
 import java.time.OffsetDateTime
 import java.util.*
