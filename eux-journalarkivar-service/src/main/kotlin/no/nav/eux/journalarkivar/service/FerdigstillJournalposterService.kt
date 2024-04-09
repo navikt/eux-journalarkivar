@@ -90,11 +90,7 @@ class FerdigstillJournalposterService(
 
     fun EuxSedJournalstatus.ferdigstillJournalpostUtenNavRinasak() {
         val rinasak = euxRinaApiClient.euxRinaSakOversikt(rinasakId)
-        safClient
-            .dokumentoversiktBrukerRoot(rinasak.fnr!!)
-            .data
-            .dokumentoversiktBruker
-            .journalposter
+        safClient.dokumentoversiktBrukerRoot(rinasak.fnr!!)
     }
 
     fun EuxNavRinasak.firstFerdigstiltJournalpostOrNull() =

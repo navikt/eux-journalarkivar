@@ -1,14 +1,12 @@
 package no.nav.eux.journalarkivar.integration.external.dokarkiv.client
 
+import no.nav.eux.journalarkivar.integration.config.put
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdatering
-import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdateringRespons
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostSakOppdatering
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.MediaType
-import org.springframework.http.RequestEntity
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import java.net.URI
 
 @Component
 class DokarkivClient(
@@ -23,23 +21,27 @@ class DokarkivClient(
         journalpostId: String,
         dokarkivJournalpostOppdatering: DokarkivJournalpostOppdatering
     ) {
-        val request: RequestEntity<DokarkivJournalpostOppdatering> = RequestEntity
-            .put(URI("$uri/$journalpostId"))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+        dokarkivRestTemplate
+            .put()
+            .uri("$uri/$journalpostId")
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
             .body(dokarkivJournalpostOppdatering)
-        dokarkivRestTemplate.exchange(request, DokarkivJournalpostOppdateringRespons::class.java)
+            .retrieve()
+            .toBodilessEntity()
     }
 
     fun oppdater(
         journalpostId: String,
         dokarkivJournalpostOppdatering: DokarkivJournalpostSakOppdatering
     ) {
-        val request: RequestEntity<DokarkivJournalpostSakOppdatering> = RequestEntity
-            .put(URI("$uri/$journalpostId"))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+        dokarkivRestTemplate
+            .put()
+            .uri("$uri/$journalpostId")
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
             .body(dokarkivJournalpostOppdatering)
-        dokarkivRestTemplate.exchange(request, DokarkivJournalpostOppdateringRespons::class.java)
+            .retrieve()
+            .toBodilessEntity()
     }
 }
