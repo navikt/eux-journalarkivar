@@ -1,13 +1,12 @@
 package no.nav.eux.journalarkivar.integration.external.saf.client
 
-import io.github.oshai.kotlinlogging.KotlinLogging.logger
+import no.nav.eux.journalarkivar.integration.config.post
 import no.nav.eux.journalarkivar.integration.external.saf.model.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.http.RequestEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.util.UriComponentsBuilder
+import org.springframework.web.client.body
 
 @Component
 class SafClient(
@@ -16,132 +15,64 @@ class SafClient(
     val safRestTemplate: RestTemplate
 ) {
 
-    val log = logger {}
-
-    fun dokumentoversiktBrukerRoot(fnr: String): SafDokumentoversiktBrukerRoot {
-        val graphQlQuery = dokumentoversiktBrukerQuery(fnr)
-        val request = RequestEntity
-            .post(
-                UriComponentsBuilder
-                    .fromHttpUrl(safUrl)
-                    .path("/graphql").build().toUri()
-            )
+    fun dokumentoversiktBrukerRoot(fnr: String): List<SafJournalpost> =
+        safRestTemplate
+            .post()
+            .uri("$safUrl/graphql")
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
-            .body<GraphQlQuery>(graphQlQuery)
-        log.info { "Henter SAF tilknyttede journalposter for bruker" }
-        val response = safRestTemplate
-            .exchange(request, SafDokumentoversiktBrukerRoot::class.java)
-        return if (response.statusCode.is2xxSuccessful) {
-            response
-                .body
-                ?: throw RuntimeException("feilet mot saf tilknyttede journalposter, men med 200")
-        } else {
-            log.error { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
-            throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
-        }
-    }
-
-    fun safSakerRoot(fnr: String): SafSakerRoot? {
-        val graphQlQuery = sakerQuery(fnr)
-        val request = RequestEntity
-            .post(
-                UriComponentsBuilder
-                    .fromHttpUrl(safUrl)
-                    .path("/graphql").build().toUri()
-            )
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body<GraphQlQuery>(graphQlQuery)
-        val response = safRestTemplate
-            .exchange(request, SafSakerRoot::class.java)
-        return if (response.statusCode.is2xxSuccessful) {
-            response.body
-        } else {
-            log.info { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
-            throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
-        }
-    }
+            .body(dokumentoversiktBrukerQuery(fnr))
+            .retrieve()
+            .body<SafDokumentoversiktBrukerRoot>()
+            ?.data
+            ?.dokumentoversiktBruker
+            ?.journalposter
+            ?: emptyList()
 
     fun safSaker(fnr: String): List<SafSak> =
-        try {
-            safSakerRoot(fnr)!!
-                .data
-                .saker
-        } catch (e: RuntimeException) {
-            log.error(e) { "Kunne ikke hente saker fra SAF på fnr" }
-            emptyList()
-        }
-
-    fun safSakOrNull(fnr: String, fagsakId: String): SafSak? {
-        val saker = safSaker(fnr)
-        val sakMedFagsakId = saker.firstOrNull { it.arkivsaksnummer == fagsakId }
-        return if (saker.isEmpty()) {
-            log.error { "Tom liste fra SAF for fnr og fagsakId $fagsakId" }
-            null
-        } else if (sakMedFagsakId != null) {
-            sakMedFagsakId
-        } else {
-            log.error { "Treff mot SAF saker på fnr (${saker.size}), men uten fagsakId $fagsakId" }
-            null
-        }
-    }
-
-    fun safJournalpost(journalpostId: String): SafJournalpost {
-        val graphQlQuery = journalpostQuery(journalpostId)
-        val request = RequestEntity
-            .post(
-                UriComponentsBuilder
-                    .fromHttpUrl(safUrl)
-                    .path("/graphql").build().toUri()
-            )
+        safRestTemplate
+            .post()
+            .uri("$safUrl/graphql")
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
-            .body<GraphQlQuery>(graphQlQuery)
-        val response = safRestTemplate
-            .exchange(request, SafJournalpostRoot::class.java)
-        return if (response.statusCode.is2xxSuccessful) {
-            response
-                .body
-                ?.data
-                ?.journalpost ?: throw RuntimeException("feilet mot saf, men med 200")
-        } else {
-            log.info { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
-            throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
-        }
-    }
+            .body(sakerQuery(fnr))
+            .retrieve()
+            .body<SafSakerRoot>()
+            ?.data
+            ?.saker
+            ?: emptyList()
+
+    fun safJournalpostOrNull(journalpostId: String): SafJournalpost? =
+        safRestTemplate
+            .post()
+            .uri("$safUrl/graphql")
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .body(journalpostQuery(journalpostId))
+            .retrieve()
+            .body<SafJournalpostRoot>()
+            ?.data
+            ?.journalpost
 
     fun tilknyttedeJournalposter(dokumentInfoId: String): List<SafJournalpost> =
         tilknyttedeJournalposterRoot(dokumentInfoId)
-            .data
-            .tilknyttedeJournalposter
+            ?.data
+            ?.tilknyttedeJournalposter
+            ?: emptyList()
 
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
-        tilknyttedeJournalposter(dokumentInfoId).firstOrNull()
+        tilknyttedeJournalposter(dokumentInfoId)
+            .firstOrNull()
 
-    fun tilknyttedeJournalposterRoot(dokumentInfoId: String): SafTilknyttedeJournalposterRoot {
-        val graphQlQuery = tilknyttedeJournalposterQuery(dokumentInfoId)
-        val request = RequestEntity
-            .post(
-                UriComponentsBuilder
-                    .fromHttpUrl(safUrl)
-                    .path("/graphql").build().toUri()
-            )
+    fun tilknyttedeJournalposterRoot(dokumentInfoId: String) =
+        safRestTemplate
+            .post()
+            .uri("$safUrl/graphql")
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
-            .body<GraphQlQuery>(graphQlQuery)
-        log.info { "Henter SAF tilknyttede journalposter for dokument info id: $dokumentInfoId" }
-        val response = safRestTemplate
-            .exchange(request, SafTilknyttedeJournalposterRoot::class.java)
-        return if (response.statusCode.is2xxSuccessful) {
-            response
-                .body
-                ?: throw RuntimeException("feilet mot saf tilknyttede journalposter, men med 200")
-        } else {
-            log.error { "Feilet mot SAF (${response.statusCode.value()}), body: ${response.body}" }
-            throw RuntimeException("feilet mot saf med ${response.statusCode.value()}")
-        }
-    }
+            .body(tilknyttedeJournalposterQuery(dokumentInfoId))
+            .retrieve()
+            .body<SafTilknyttedeJournalposterRoot>()
 }
 
 fun journalpostQuery(journalpostId: String) = GraphQlQuery(
