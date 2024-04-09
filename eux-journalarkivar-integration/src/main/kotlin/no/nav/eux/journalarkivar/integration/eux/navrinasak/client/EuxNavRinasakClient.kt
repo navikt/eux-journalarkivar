@@ -2,11 +2,9 @@ package no.nav.eux.journalarkivar.integration.eux.navrinasak.client
 
 import no.nav.eux.journalarkivar.integration.config.get
 import no.nav.eux.journalarkivar.integration.config.post
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
+import no.nav.eux.journalarkivar.integration.config.put
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.*
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.UKJENT
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.SedJournalstatusSearchCriteriaType
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.SedJournalstatuserSearchResponseType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -41,7 +39,12 @@ class EuxNavRinasakClient(
         return entity.body!!
     }
 
-    fun put(euxSedJournalstatus: EuxSedJournalstatus) {
-
+    fun put(journalstatusPut: EuxSedJournalstatusPut) {
+        euxNavRinasakRestTemplate
+            .put()
+            .uri("${euxNavRinasakUrl}/api/v1/sed/journalstatuser")
+            .body(journalstatusPut)
+            .retrieve()
+            .toBodilessEntity()
     }
 }

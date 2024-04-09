@@ -74,17 +74,18 @@ class FerdigstillJournalposterService(
     }
 
     infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
-        euxNavRinasakClient.put(copy(sedJournalstatus = journalstatus))
+        euxNavRinasakClient.put(copy(sedJournalstatus = journalstatus).put)
         log.info { "Journalstatus satt til $journalstatus" }
     }
 
     fun SafJournalpost.ferdigstillJournalpost(
         navRinasak: EuxNavRinasak,
     ) {
-        val ferdigstiltJournalpost = navRinasak.firstFerdigstiltJournalpost()
-        this oppdaterMed ferdigstiltJournalpost
-        euxJournalClient.ferdigstill(journalpostId)
-        log.info { "Ferdigstilling av journalpost utført" }
+        val ferdigstiltJournalpost = navRinasak.firstFerdigstiltJournalpostOrNull()
+        when {
+            ferdigstiltJournalpost != null -> this ferdigstillMed ferdigstiltJournalpost
+            else -> log.info { "${navRinasak.rinasakId} har ikke noen ferdigstilte journalposter" }
+        }
     }
 
     fun EuxSedJournalstatus.ferdigstillJournalpostUtenNavRinasak() {
@@ -96,10 +97,16 @@ class FerdigstillJournalposterService(
             .journalposter
     }
 
-    fun EuxNavRinasak.firstFerdigstiltJournalpost() =
+    fun EuxNavRinasak.firstFerdigstiltJournalpostOrNull() =
         dokumenter!!
             .mapNotNull { safClient.firstTilknyttetJournalpostOrNull(it.dokumentInfoId) }
-            .first { it.journalstatus.erJournalfoert }
+            .firstOrNull { it.journalstatus.erJournalfoert }
+
+    infix fun SafJournalpost.ferdigstillMed(ferdigstiltJournalpost: SafJournalpost) {
+        this oppdaterMed ferdigstiltJournalpost
+        euxJournalClient.ferdigstill(journalpostId)
+        log.info { "Ferdigstilling av journalpost utført" }
+    }
 
     infix fun SafJournalpost.oppdaterMed(eksisterendeJournalpost: SafJournalpost) {
         log.info { "Oppdaterer $journalpostId med utgangspunkt i ${eksisterendeJournalpost.journalpostId}" }

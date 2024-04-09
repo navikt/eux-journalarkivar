@@ -18,6 +18,30 @@ import org.springframework.web.client.RestTemplate
 class IntegrationConfig {
 
     @Bean
+    fun euxOppgaveRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "eux-oppgave"
+
+    @Bean
+    fun euxJournalRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "eux-journal"
+
+    @Bean
+    fun euxNavRinasakRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "eux-nav-rinasak"
+
+    @Bean
+    fun euxRinaApiRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "eux-rina-api"
+
+    @Bean
+    fun safRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "saf"
+
+    @Bean
+    fun dokarkivRestTemplate(components: RestTemplateComponents) =
+        components prefixBy "dokarkiv"
+
+    @Bean
     fun restTemplateComponents(
         restTemplateBuilder: RestTemplateBuilder,
         clientConfigurationProperties: ClientConfigurationProperties,
@@ -28,36 +52,12 @@ class IntegrationConfig {
         oAuth2AccessTokenService = oAuth2AccessTokenService
     )
 
-    @Bean
-    fun euxOppgaveRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "eux-oppgave")
-
-    @Bean
-    fun euxJournalRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "eux-journal")
-
-    @Bean
-    fun euxNavRinasakRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "eux-nav-rinasak")
-
-    @Bean
-    fun euxRinaApiRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "eux-rina-api")
-
-    @Bean
-    fun safRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "saf")
-
-    @Bean
-    fun dokarkivRestTemplate(components: RestTemplateComponents) =
-        restTemplate(components, "dokarkiv")
-
-    fun restTemplate(components: RestTemplateComponents, appName: String): RestTemplate {
-        val clientProperties: ClientProperties = components.clientConfigurationProperties
+    infix fun RestTemplateComponents.prefixBy(appName: String): RestTemplate {
+        val clientProperties: ClientProperties = clientConfigurationProperties
             .registration["$appName-credentials"]
             ?: throw RuntimeException("could not find oauth2 client config for $appName-credentials")
-        return components.restTemplateBuilder
-            .additionalInterceptors(bearerTokenInterceptor(clientProperties, components.oAuth2AccessTokenService))
+        return restTemplateBuilder
+            .additionalInterceptors(bearerTokenInterceptor(clientProperties, oAuth2AccessTokenService))
             .build()
     }
 
@@ -73,6 +73,7 @@ class IntegrationConfig {
 
 fun RestTemplate.restClient() = RestClient.create(this)
 fun RestTemplate.post() = restClient().post()
+fun RestTemplate.put() = restClient().put()
 fun RestTemplate.get() = restClient().get()
 fun RestTemplate.patch() = restClient().patch()
 

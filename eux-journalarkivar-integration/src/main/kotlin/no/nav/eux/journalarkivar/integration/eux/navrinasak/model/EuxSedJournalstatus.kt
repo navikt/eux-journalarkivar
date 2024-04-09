@@ -16,4 +16,13 @@ data class EuxSedJournalstatus(
     enum class Status {
         JOURNALFOERT, UKJENT
     }
+
+    val put
+        get() =
+            EuxSedJournalstatusPut(
+                rinasakId = rinasakId,
+                sedId = sedId,
+                sedVersjon = sedVersjon,
+                sedJournalstatus = sedJournalstatus
+            )
 }
