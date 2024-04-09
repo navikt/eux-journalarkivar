@@ -6,7 +6,7 @@ import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivBruker
 import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivBrukerType
 import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivJournalpostOppdatering
 import no.nav.eux.journalarkivar.integration.dokarkiv.model.DokarkivSakOppdatering
-import no.nav.eux.journalarkivar.integration.euxjournal.client.JournalClient
+import no.nav.eux.journalarkivar.integration.euxjournal.client.EuxJournalClient
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.client.EuxNavRinasakClient
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.euxnavrinasak.model.EuxNavRinasak
@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service
 class FerdigstillJournalposterService(
     val euxNavRinasakClient: EuxNavRinasakClient,
     val euxRinaApiClient: EuxRinaApiClient,
+    val euxJournalClient: EuxJournalClient,
     val safClient: SafClient,
     val dokarkivClient: DokarkivClient,
-    val journalClient: JournalClient,
 ) {
 
     val log = logger {}
@@ -83,7 +83,7 @@ class FerdigstillJournalposterService(
     ) {
         val ferdigstiltJournalpost = navRinasak.firstFerdigstiltJournalpost()
         this oppdaterMed ferdigstiltJournalpost
-        journalClient.ferdigstill(journalpostId)
+        euxJournalClient.ferdigstill(journalpostId)
         log.info { "Ferdigstilling av journalpost utført" }
     }
 

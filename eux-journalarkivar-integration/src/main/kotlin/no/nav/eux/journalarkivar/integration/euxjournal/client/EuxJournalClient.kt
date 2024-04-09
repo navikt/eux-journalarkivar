@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate
 import java.net.URI
 
 @Component
-class JournalClient(
+class EuxJournalClient(
     @Value("\${endpoint.journal}")
     val journalUrl: String,
     val euxJournalRestTemplate: RestTemplate
