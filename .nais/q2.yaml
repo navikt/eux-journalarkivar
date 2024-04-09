@@ -18,12 +18,12 @@ application:
     name: eux-oppgave-q2
     namespace: eessibasis
 
-  eux-rina-api:
-    name: eux-rina-api-q2
+  eux-journal:
+    name: eux-journal-q2
     namespace: eessibasis
 
-  eux-nav-rinasak-datasync:
-    name: eux-nav-rinasak-datasync-q2
+  eux-rina-api:
+    name: eux-rina-api-q2
     namespace: eessibasis
 
   eux-nav-rinasak:
