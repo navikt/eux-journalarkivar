@@ -33,7 +33,6 @@ class FerdigstillJournalposterService(
         val euxSedJournalstatuser = euxNavRinasakClient.finn()
         log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
         euxSedJournalstatuser.forEach { it.tryFerdigstillJournalpost() }
-        log.info { "ferdigstilling av journalposter gjennomført" }
     }
 
     fun EuxSedJournalstatus.tryFerdigstillJournalpost() =
