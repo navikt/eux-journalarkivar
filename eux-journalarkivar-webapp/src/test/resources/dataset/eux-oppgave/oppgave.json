@@ -1,0 +1,25 @@
+{
+  "id": 190402,
+  "oppgavetype": "JFR",
+  "tildeltEnhetsnr": "2950",
+  "endretAvEnhetsnr": "2950",
+  "opprettetAvEnhetsnr": "9999",
+  "journalpostId": "453857122",
+  "aktoerId": "2850955164683",
+  "tilordnetRessurs": "Z993030",
+  "beskrivelse": "desc",
+  "tema": "GEN",
+  "versjon": 4,
+  "opprettetAv": "srveux-app",
+  "endretAv": "eux-oppgave-q2",
+  "prioritet": "NORM",
+  "status": "FERDIGSTILT",
+  "metadata": {
+    "RINA_SAKID": "1447222"
+  },
+  "fristFerdigstillelse": "2024-01-16",
+  "aktivDato": "2024-01-15",
+  "opprettetTidspunkt": "2024-01-15T11:01:02.96+01:00",
+  "ferdigstiltTidspunkt": "2024-01-17T18:17:23.976+01:00",
+  "endretTidspunkt": "2024-01-17T18:17:23.976+01:00"
+}

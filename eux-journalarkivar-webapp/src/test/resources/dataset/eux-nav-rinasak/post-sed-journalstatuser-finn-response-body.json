@@ -1,0 +1,14 @@
+{
+  "sedJournalstatuser": [
+    {
+      "rinasakId": 1444520,
+      "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "sedVersjon": 2,
+      "sedJournalstatus": "JOURNALFOERT",
+      "endretBruker": "testUser",
+      "endretTidspunkt": "2023-12-07T14:27:20.33111Z",
+      "opprettetBruker": "testUser",
+      "opprettetTidspunkt": "2023-12-07T14:27:20.33111Z"
+    }
+  ]
+}

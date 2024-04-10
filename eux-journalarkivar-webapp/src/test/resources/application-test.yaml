@@ -1,0 +1,71 @@
+no.nav.security.jwt:
+  expirythreshold: 1
+  issuer:
+    azuread:
+      discoveryurl: http://localhost:${mock-oauth2-server.port}/issuer1/.well-known/openid-configuration
+      accepted_audience: demoapplication
+
+  client:
+    registration:
+
+      eux-oppgave-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+      eux-journal-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+      eux-nav-rinasak-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+      eux-rina-api-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+      saf-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+      dokarkiv-credentials:
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
+        grant-type: client_credentials
+        scope: test
+        authentication:
+          client-id: cluster:namespace:app1
+          client-jwk: src/test/resources/jwk.json
+          client-auth-method: private_key_jwt
+
+endpoint:
+  euxnavrinasak: http://localhost:9500/mock
+  euxoppgave: http://localhost:9500/mock
+  euxjournal: http://localhost:9500/mock
+  euxrinaapi: http://localhost:9500/mock
+  saf: http://localhost:9500/mock
+  dokarkiv: http://localhost:9500/mock
