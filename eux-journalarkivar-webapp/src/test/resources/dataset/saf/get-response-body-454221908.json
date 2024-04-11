@@ -1,0 +1,37 @@
+{
+  "data": {
+    "tilknyttedeJournalposter": [
+      {
+        "journalpostId": "453802640",
+        "journalstatus": "FERDIGSTILT",
+        "journalposttype": "I",
+        "eksternReferanseId": "1444520_aa7d09fc470c4b86af9d315d12f5a3aa_1",
+        "dokumenter": [
+          {
+            "dokumentInfoId": "454221908",
+            "tittel": "1",
+            "brevkode": "1"
+          }
+        ],
+        "tilleggsopplysninger": [
+          {
+            "nokkel": "rinaSakId",
+            "verdi": "1447997"
+          }
+        ],
+        "sak": {
+          "tema": "KON",
+          "fagsakId": null,
+          "fagsaksystem": "FS22",
+          "arkivsaksnummer": "140288080",
+          "arkivsaksystem": "GSAK",
+          "sakstype": "GENERELL_SAK"
+        },
+        "bruker": {
+          "id": "1662008437481",
+          "type": "AKTOERID"
+        }
+      }
+    ]
+  }
+}

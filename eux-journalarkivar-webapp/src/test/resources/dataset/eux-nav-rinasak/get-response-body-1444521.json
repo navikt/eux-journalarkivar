@@ -1,0 +1,17 @@
+{
+  "rinasakId": 1444521,
+  "opprettetBruker": "ukjent",
+  "opprettetTidspunkt": "2023-12-07T14:27:20.33111Z",
+  "overstyrtEnhetsnummer": null,
+  "initiellFagsak": null,
+  "dokumenter": [
+    {
+      "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+      "sedVersjon": 2,
+      "sedType": "H001",
+      "dokumentInfoId": "454221908",
+      "opprettetBruker": "ukjent",
+      "opprettetTidspunkt": "2023-12-07T14:27:20.33111Z"
+    }
+  ]
+}

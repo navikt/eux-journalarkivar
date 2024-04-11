@@ -10,7 +10,7 @@ class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
 
     @Test
     fun `POST ferdigstillJournalposter - 204`() {
-        val createResponse = restTemplate
+        restTemplate
             .exchange<Void>(
                 ferdigstillJournalposterUrl,
                 HttpMethod.POST,
@@ -20,6 +20,8 @@ class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
         requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }
         assertThat(requestBodies["/api/v1/journalposter/453802638/ferdigstill"]).isNotNull()
         assertThat(requestBodies["/api/v1/rinasaker/1444520"]).isNotNull()
-
+        assertThat(requestBodies["/api/v1/journalposter/453802639/ferdigstill"]).isNull()
+        assertThat(requestBodies["/api/v1/journalposter/453802640/ferdigstill"]).isNull()
+        assertThat(requestBodies["/api/v1/rinasaker/1444520"]).isNotNull()
     }
 }

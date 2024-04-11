@@ -6,31 +6,20 @@ import org.springframework.http.MediaType
 
 fun safResponse(body: String) =
     when {
-        body.contains("454221906") -> document454221906()
-        body.contains("454221907") -> document454221907()
+        body.contains("454221906") -> document("454221906")
+        body.contains("454221907") -> document("454221907")
+        body.contains("454221908") -> document("454221908")
         else -> throw RuntimeException("No SAF response defined for $body}")
     }
 
-fun document454221906() =
+fun document(dokumentInfoId: String) =
     MockResponse().apply {
         setResponseCode(200)
         setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        setBody(safResponseBody454221906)
+        setBody(safResponseBody(dokumentInfoId))
     }
 
-fun document454221907() =
-    MockResponse().apply {
-        setResponseCode(200)
-        setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        setBody(safResponseBody454221907)
-    }
-
-val safResponseBody454221906 =
+fun safResponseBody(dokumentInfoId: String) =
     Any::class::class.java
-        .getResource("/dataset/saf/get-response-body-454221906.json")!!
-        .readText()
-
-val safResponseBody454221907 =
-    Any::class::class.java
-        .getResource("/dataset/saf/get-response-body-454221907.json")!!
+        .getResource("/dataset/saf/get-response-body-$dokumentInfoId.json")!!
         .readText()
