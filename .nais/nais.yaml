@@ -1,7 +1,7 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: CLIENT_{{ name }}
+  name: {{ name }}
   namespace: eessibasis
   labels:
     team: eessibasis
