@@ -68,32 +68,32 @@ spec:
         - application: {{ application.eux-journal.name }}
         - application: {{ application.eux-nav-rinasak.name }}
   env:
-    - name: application.EUXNAVRINASAK_ENDPOINT
+    - name: EUXNAVRINASAK_ENDPOINT
       value: {{ application.eux-nav-rinasak.endpoint }}
-    - name: application.EUXNAVRINASAK_SCOPE
+    - name: EUXNAVRINASAK_SCOPE
       value: {{ application.eux-nav-rinasak.scope }}
 
-    - name: application.EUXOPPGAVE_ENDPOINT
+    - name: EUXOPPGAVE_ENDPOINT
       value: {{ application.eux-oppgave.endpoint }}
-    - name: application.EUXOPPGAVE_SCOPE
+    - name: EUXOPPGAVE_SCOPE
       value: {{ application.eux-oppgave.scope }}
 
-    - name: application.EUXJOURNAL_ENDPOINT
+    - name: EUXJOURNAL_ENDPOINT
       value: {{ application.eux-journal.endpoint }}
-    - name: application.EUXJOURNAL_SCOPE
+    - name: EUXJOURNAL_SCOPE
       value: {{ application.eux-journal.scope }}
 
-    - name: application.EUXRINAAPI_ENDPOINT
+    - name: EUXRINAAPI_ENDPOINT
       value: {{ application.eux-rina-api.endpoint }}
-    - name: application.EUXRINAAPI_SCOPE
+    - name: EUXRINAAPI_SCOPE
       value: {{ application.eux-rina-api.scope }}
 
-    - name: application.SAF_ENDPOINT
+    - name: SAF_ENDPOINT
       value: {{ application.saf.endpoint }}
-    - name: application.SAF_SCOPE
+    - name: SAF_SCOPE
       value: {{ application.saf.scope }}
 
-    - name: application.DOKARKIV_ENDPOINT
+    - name: DOKARKIV_ENDPOINT
       value: {{ application.dokarkiv.endpoint }}
-    - name: application.DOKARKIV_SCOPE
+    - name: DOKARKIV_SCOPE
       value: {{ application.dokarkiv.scope }}
