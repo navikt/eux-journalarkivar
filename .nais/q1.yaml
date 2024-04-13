@@ -16,47 +16,38 @@ application:
 
   eux-oppgave:
     name: eux-oppgave-q1
+    endpoint: http://eux-oppgave-q1
+    scope: api://dev-gcp.eessibasis.eux-oppgave-q1/.default
     namespace: eessibasis
 
   eux-journal:
     name: eux-journal-q1
+    endpoint: http://eux-journal-q1
+    scope: api://dev-gcp.eessibasis.eux-journal-q1/.default
     namespace: eessibasis
 
   eux-rina-api:
     name: eux-rina-api-q1
+    host: eux-rina-api-q1.dev-fss-pub.nais.io
+    endpoint: https://eux-rina-api-q1.dev-fss-pub.nais.io
+    scope: api://dev-fss.eessibasis.eux-rina-api-q1/.default
     namespace: eessibasis
 
   eux-nav-rinasak:
     name: eux-nav-rinasak-q1
-    namespace: eessibasis
-
-client:
-  euxnavrinasak:
     endpoint: http://eux-nav-rinasak-q1
     scope: api://dev-gcp.eessibasis.eux-nav-rinasak-q1/.default
+    namespace: eessibasis
 
-  euxoppgave:
-    endpoint: http://eux-oppgave-q1
-    scope: api://dev-gcp.eessibasis.eux-oppgave-q1/.default
+saf:
+  host: saf.dev-fss-pub.nais.io
+  endpoint: https://saf.dev-fss-pub.nais.io
+  scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
 
-  euxjournal:
-    endpoint: http://eux-journal-q1
-    scope: api://dev-gcp.eessibasis.eux-journal-q1/.default
-
-  euxrinaapi:
-    host: eux-rina-api-q1.dev-fss-pub.nais.io
-    endpoint: https://eux-rina-api-q1.dev-fss-pub.nais.io
-    scope: api://dev-fss.eessibasis.eux-rina-api-q1/.default
-
-  saf:
-    host: saf.dev-fss-pub.nais.io
-    endpoint: https://saf.dev-fss-pub.nais.io
-    scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
-
-  dokarkiv:
-    host: dokarkiv-q1.dev-fss-pub.nais.io
-    endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
-    scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
+dokarkiv:
+  host: dokarkiv-q1.dev-fss-pub.nais.io
+  endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
+  scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
 
 cluster:
   fss: dev-fss

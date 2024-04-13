@@ -60,40 +60,40 @@ spec:
           cluster: {{ cluster.gcp }}
     outbound:
       external:
-        - host: {{ client.saf.host }}
-        - host: {{ client.dokarkiv.host }}
-        - host: {{ client.euxrinaapi.host }}
+        - host: {{ application.saf.host }}
+        - host: {{ application.dokarkiv.host }}
+        - host: {{ application.eux-rina-api.host }}
       rules:
         - application: {{ application.eux-oppgave.name }}
         - application: {{ application.eux-journal.name }}
         - application: {{ application.eux-nav-rinasak.name }}
   env:
-    - name: CLIENT_EUXNAVRINASAK_ENDPOINT
-      value: {{ client.euxnavrinasak.endpoint }}
-    - name: CLIENT_EUXNAVRINASAK_SCOPE
-      value: {{ client.euxnavrinasak.scope }}
+    - name: application.EUXNAVRINASAK_ENDPOINT
+      value: {{ application.eux-nav-rinasak.endpoint }}
+    - name: application.EUXNAVRINASAK_SCOPE
+      value: {{ application.eux-nav-rinasak.scope }}
 
-    - name: CLIENT_EUXOPPGAVE_ENDPOINT
-      value: {{ client.euxoppgave.endpoint }}
-    - name: CLIENT_EUXOPPGAVE_SCOPE
-      value: {{ client.euxoppgave.scope }}
+    - name: application.EUXOPPGAVE_ENDPOINT
+      value: {{ application.eux-oppgave.endpoint }}
+    - name: application.EUXOPPGAVE_SCOPE
+      value: {{ application.eux-oppgave.scope }}
 
-    - name: CLIENT_EUXJOURNAL_ENDPOINT
-      value: {{ client.euxjournal.endpoint }}
-    - name: CLIENT_EUXJOURNAL_SCOPE
-      value: {{ client.euxjournal.scope }}
+    - name: application.EUXJOURNAL_ENDPOINT
+      value: {{ application.eux-journal.endpoint }}
+    - name: application.EUXJOURNAL_SCOPE
+      value: {{ application.eux-journal.scope }}
 
-    - name: CLIENT_EUXRINAAPI_ENDPOINT
-      value: {{ client.euxrinaapi.endpoint }}
-    - name: CLIENT_EUXRINAAPI_SCOPE
-      value: {{ client.euxrinaapi.scope }}
+    - name: application.EUXRINAAPI_ENDPOINT
+      value: {{ application.eux-rina-api.endpoint }}
+    - name: application.EUXRINAAPI_SCOPE
+      value: {{ application.eux-rina-api.scope }}
 
-    - name: CLIENT_SAF_ENDPOINT
-      value: {{ client.saf.endpoint }}
-    - name: CLIENT_SAF_SCOPE
-      value: {{ client.saf.scope }}
+    - name: application.SAF_ENDPOINT
+      value: {{ application.saf.endpoint }}
+    - name: application.SAF_SCOPE
+      value: {{ application.saf.scope }}
 
-    - name: CLIENT_DOKARKIV_ENDPOINT
-      value: {{ client.dokarkiv.endpoint }}
-    - name: CLIENT_DOKARKIV_SCOPE
-      value: {{ client.dokarkiv.scope }}
+    - name: application.DOKARKIV_ENDPOINT
+      value: {{ application.dokarkiv.endpoint }}
+    - name: application.DOKARKIV_SCOPE
+      value: {{ application.dokarkiv.scope }}

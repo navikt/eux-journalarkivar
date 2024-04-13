@@ -17,36 +17,27 @@ application:
   eux-oppgave:
     name: eux-oppgave-q2
     namespace: eessibasis
+    endpoint: http://eux-oppgave-q2
+    scope: api://dev-gcp.eessibasis.eux-oppgave-q2/.default
 
   eux-journal:
     name: eux-journal-q2
     namespace: eessibasis
+    endpoint: http://eux-journal-q2
+    scope: api://dev-gcp.eessibasis.eux-journal-q2/.default
 
   eux-rina-api:
     name: eux-rina-api-q2
     namespace: eessibasis
+    host: eux-rina-api-q2.dev-fss-pub.nais.io
+    endpoint: https://eux-rina-api-q2.dev-fss-pub.nais.io
+    scope: api://dev-fss.eessibasis.eux-rina-api-q2/.default
 
   eux-nav-rinasak:
     name: eux-nav-rinasak-q2
     namespace: eessibasis
-
-client:
-  euxnavrinasak:
     endpoint: http://eux-nav-rinasak-q2
     scope: api://dev-gcp.eessibasis.eux-nav-rinasak-q2/.default
-
-  euxoppgave:
-    endpoint: http://eux-oppgave-q2
-    scope: api://dev-gcp.eessibasis.eux-oppgave-q2/.default
-
-  euxjournal:
-    endpoint: http://eux-journal-q2
-    scope: api://dev-gcp.eessibasis.eux-journal-q2/.default
-
-  euxrinaapi:
-    host: eux-rina-api-q2.dev-fss-pub.nais.io
-    endpoint: https://eux-rina-api-q2.dev-fss-pub.nais.io
-    scope: api://dev-fss.eessibasis.eux-rina-api-q2/.default
 
   saf:
     host: saf-q2.dev-fss-pub.nais.io
