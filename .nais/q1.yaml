@@ -39,15 +39,15 @@ application:
     scope: api://dev-gcp.eessibasis.eux-nav-rinasak-q1/.default
     namespace: eessibasis
 
-saf:
-  host: saf.dev-fss-pub.nais.io
-  endpoint: https://saf.dev-fss-pub.nais.io
-  scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
+  saf:
+    host: saf.dev-fss-pub.nais.io
+    endpoint: https://saf.dev-fss-pub.nais.io
+    scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
 
-dokarkiv:
-  host: dokarkiv-q1.dev-fss-pub.nais.io
-  endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
-  scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
+  dokarkiv:
+    host: dokarkiv-q1.dev-fss-pub.nais.io
+    endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
+    scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
 
 cluster:
   fss: dev-fss
