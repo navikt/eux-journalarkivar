@@ -28,10 +28,10 @@ application:
 
   eux-rina-api:
     name: eux-rina-api-q1
-    host: eux-rina-api-q1.dev-fss-pub.nais.io
     endpoint: https://eux-rina-api-q1.dev-fss-pub.nais.io
     scope: api://dev-fss.eessibasis.eux-rina-api-q1/.default
     namespace: eessibasis
+    host: eux-rina-api-q1.dev-fss-pub.nais.io
 
   eux-nav-rinasak:
     name: eux-nav-rinasak-q1

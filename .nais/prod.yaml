@@ -16,28 +16,28 @@ application:
 
   eux-oppgave:
     name: eux-oppgave
-    namespace: eessibasis
     endpoint: http://eux-oppgave
     scope: api://prod-gcp.eessibasis.eux-oppgave/.default
+    namespace: eessibasis
 
   eux-journal:
     name: eux-journal
-    namespace: eessibasis
     endpoint: http://eux-journal
     scope: api://prod-gcp.eessibasis.eux-journal/.default
+    namespace: eessibasis
 
   eux-rina-api:
     name: eux-rina-api
-    namespace: eessibasis
-    host: eux-rina-api.prod-fss-pub.nais.io
     endpoint: https://eux-rina-api.prod-fss-pub.nais.io
+    host: eux-rina-api.prod-fss-pub.nais.io
+    namespace: eessibasis
     scope: api://prod-gcp.eessibasis.eux-nav-rinasak/.default
 
   eux-nav-rinasak:
     name: eux-nav-rinasak
-    namespace: eessibasis
     endpoint: http://eux-nav-rinasak
     scope: api://prod-gcp.eessibasis.eux-nav-rinasak/.default
+    namespace: eessibasis
 
   saf:
     host: saf.prod-fss-pub.nais.io
