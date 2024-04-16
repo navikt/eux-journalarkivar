@@ -18,6 +18,10 @@ fun <T> T.mdc(
     return this
 }
 
+fun clearMdc() {
+    MDC.clear()
+}
+
 private infix fun String.leggTil(value: Any?) {
     if (value != null) MDC.put(this, "$value")
 }

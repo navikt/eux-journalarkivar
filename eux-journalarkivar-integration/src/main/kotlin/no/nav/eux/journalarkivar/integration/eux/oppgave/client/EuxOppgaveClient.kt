@@ -2,6 +2,7 @@ package no.nav.eux.journalarkivar.integration.eux.oppgave.client
 
 import no.nav.eux.journal.integration.client.eux.oppgave.TildelEnhetsnr
 import no.nav.eux.journalarkivar.integration.config.post
+import no.nav.eux.journalarkivar.integration.eux.oppgave.model.BehandleSedFraJournalpostId
 import no.nav.eux.journalarkivar.integration.eux.oppgave.model.FerdigstillOppgaver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
@@ -26,6 +27,17 @@ class EuxOppgaveClient(
                     personident = personident,
                 )
             )
+            .contentType(APPLICATION_JSON)
+            .accept(MediaType.ALL)
+            .retrieve()
+            .toBodilessEntity()
+    }
+
+    fun behandleSed(journalpostId: String) {
+        euxOppgaveRestTemplate
+            .post()
+            .uri("${euxOppgaveUrl}/api/v1/oppgaver/behandleSedFraJournalpostId")
+            .body(BehandleSedFraJournalpostId(journalpostId))
             .contentType(APPLICATION_JSON)
             .accept(MediaType.ALL)
             .retrieve()

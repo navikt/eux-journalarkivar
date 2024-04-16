@@ -21,7 +21,7 @@ import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
 
 @Service
-class FerdigstillJournalposterService(
+class JournalService(
     val euxNavRinasakClient: EuxNavRinasakClient,
     val euxRinaApiClient: EuxRinaApiClient,
     val euxJournalClient: EuxJournalClient,
@@ -33,6 +33,7 @@ class FerdigstillJournalposterService(
     val log = logger {}
 
     fun ferdigstillJournalposter() {
+        clearMdc()
         val euxSedJournalstatuser = euxNavRinasakClient.finn()
         log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
         euxSedJournalstatuser.forEach { it.tryFerdigstillJournalpost() }
@@ -49,14 +50,13 @@ class FerdigstillJournalposterService(
         }
 
     fun EuxSedJournalstatus.ferdigstillJournalpost() {
-        log.info { "henter rinasak $rinasakId" }
         val navRinasak = euxNavRinasakClient.finn(rinasakId)
         val dokument = navRinasak
             .dokumenter
             ?.single { it erSammeSedSom this }
         when {
             dokument != null -> ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
-            else -> ferdigstillJournalpostUtenNavRinasak()
+            else -> log.info { "Fant ikke dokument for journalstatus" }
         }
         this settStatusTil JOURNALFOERT
     }
@@ -93,11 +93,6 @@ class FerdigstillJournalposterService(
         }
     }
 
-    fun EuxSedJournalstatus.ferdigstillJournalpostUtenNavRinasak() {
-        val rinasak = euxRinaApiClient.euxRinaSakOversikt(rinasakId)
-        safClient.dokumentoversiktBrukerRoot(rinasak.fnr!!)
-    }
-
     fun EuxNavRinasak.firstFerdigstiltJournalpostOrNull() =
         dokumenter!!
             .mapNotNull { safClient.firstTilknyttetJournalpostOrNull(it.dokumentInfoId) }
@@ -112,6 +107,8 @@ class FerdigstillJournalposterService(
             personident = ferdigstiltJournalpost.bruker!!.id
         )
         log.info { "Tilhørende oppgave ferdigstilt" }
+        euxOppgaveClient.behandleSed(journalpostId)
+        log.info { "Behandle sed oppgave opprettet" }
     }
 
     infix fun SafJournalpost.oppdaterMed(eksisterendeJournalpost: SafJournalpost) {
