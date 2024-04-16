@@ -23,5 +23,7 @@ class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
         assertThat(requestBodies["/api/v1/journalposter/453802639/ferdigstill"]).isNull()
         assertThat(requestBodies["/api/v1/journalposter/453802640/ferdigstill"]).isNull()
         assertThat(requestBodies["/api/v1/rinasaker/1444520"]).isNotNull()
+        assertThat(requestBodies["/api/v1/oppgaver/ferdigstill"])
+            .isEqualTo("{\"journalpostIder\":[\"453802638\"],\"personident\":\"1662008437481\"}")
     }
 }

@@ -7,6 +7,7 @@ import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.JOURNALFOERT
+import no.nav.eux.journalarkivar.integration.eux.oppgave.client.EuxOppgaveClient
 import no.nav.eux.journalarkivar.integration.eux.rinaapi.client.EuxRinaApiClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.client.DokarkivClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBruker
@@ -26,6 +27,7 @@ class FerdigstillJournalposterService(
     val euxJournalClient: EuxJournalClient,
     val safClient: SafClient,
     val dokarkivClient: DokarkivClient,
+    val euxOppgaveClient: EuxOppgaveClient,
 ) {
 
     val log = logger {}
@@ -105,6 +107,11 @@ class FerdigstillJournalposterService(
         this oppdaterMed ferdigstiltJournalpost
         euxJournalClient.ferdigstill(journalpostId)
         log.info { "Ferdigstilling av journalpost utført" }
+        euxOppgaveClient.ferdigstillOppgave(
+            journalpostId = journalpostId,
+            personident = ferdigstiltJournalpost.bruker!!.id
+        )
+        log.info { "Tilhørende oppgave ferdigstilt" }
     }
 
     infix fun SafJournalpost.oppdaterMed(eksisterendeJournalpost: SafJournalpost) {
