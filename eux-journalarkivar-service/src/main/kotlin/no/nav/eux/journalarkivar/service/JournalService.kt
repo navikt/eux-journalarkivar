@@ -66,7 +66,7 @@ class JournalService(
         dokumentInfoId: String
     ) {
         mdc(dokumentInfoId = dokumentInfoId)
-        log.info { "Ferdigstiller journalpost med dokumentInfoId" }
+        log.info { "Forsøker ferdigstilling av journalpost..." }
         val journalpost = safClient
             .firstTilknyttetJournalpostOrNull(dokumentInfoId)
             ?: throw RuntimeException("Fant ikke journalpost for dokumentInfoId")
