@@ -6,6 +6,14 @@ application:
     name: eux-journalarkivar-naisjob-q1
     namespace: eessibasis
 
+  eux-journalarkivar-feilregistrer-naisjob:
+    name: eux-journalarkivar-feilregistrer-naisjob-q1
+    namespace: eessibasis
+
+  eux-journalarkivar-ferdigstill-naisjob:
+    name: eux-journalarkivar-ferdigstill-naisjob-q1
+    namespace: eessibasis
+
   eux-neessi:
     name: eux-neessi-q1
     namespace: eessibasis
