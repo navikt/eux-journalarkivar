@@ -1,15 +1,15 @@
-patch:
+post:
   tags:
-    - Eux Journal API
-  summary: Ferdigstill
-  operationId: ferdigstillJournalpost
-  description: Ferdigstiller journalposten i joark
-  parameters:
-    - name: journalpostId
-      in: path
-      required: true
-      schema:
-        $ref: '../properties/dokument.yaml#/journalpostId'
+    - Eux Journalarkivar API
+  summary: Journalpost API
+  operationId: ferdigstillJournalposter
+  description: start ferdigstillJournalposter
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/FerdigstillJournalposterRequestOpenApiType'
 
   responses:
     '204':

@@ -4,12 +4,14 @@ import org.slf4j.MDC
 import java.util.*
 
 fun <T> T.mdc(
+    arkivarprosess: String? = null,
     rinasakId: Int? = null,
     dokumentInfoId: String? = null,
     sedId: UUID? = null,
     sedVersjon: Int? = null,
     journalpostId: String? = null
 ): T {
+    "arkivarprosess" leggTil arkivarprosess
     "rinasakId" leggTil rinasakId
     "dokumentInfoId" leggTil dokumentInfoId
     "sedId" leggTil sedId

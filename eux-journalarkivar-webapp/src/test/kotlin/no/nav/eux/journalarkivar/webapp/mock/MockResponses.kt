@@ -22,6 +22,7 @@ fun mockResponsePost(request: RecordedRequest, body: String) =
         "/graphql" -> safResponse(body)
         "/api/v1/oppgaver" -> oppgaverResponse()
         "/api/v1/oppgaver/tildelEnhetsnr" -> tildelEnhetsnrResponse(body)
+        "/api/v1/journalposter/settStatusAvbryt" -> response200()
         else -> defaultResponse()
     }
 

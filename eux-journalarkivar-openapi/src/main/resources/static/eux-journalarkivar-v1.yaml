@@ -14,4 +14,6 @@ tags:
 
 paths:
   '/ferdigstillJournalposter':
-    $ref: 'journalarkivar/operations_rot.yaml'
+    $ref: 'ferdigstill/operations_rot.yaml'
+  '/feilregistrerJournalposter':
+    $ref: 'feilregistrer/operations_rot.yaml'

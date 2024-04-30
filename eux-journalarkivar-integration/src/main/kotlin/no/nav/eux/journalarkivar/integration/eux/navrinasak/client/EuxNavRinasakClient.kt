@@ -17,7 +17,14 @@ class EuxNavRinasakClient(
     val euxNavRinasakRestTemplate: RestTemplate
 ) {
 
-    fun finn(euxSedJournalstatus: EuxSedJournalstatus.Status = UKJENT) =
+    fun finn(rinasakId: Int) =
+        euxNavRinasakRestTemplate
+            .get()
+            .uri("${euxNavRinasakUrl}/api/v1/rinasaker/${rinasakId}")
+            .retrieve()
+            .body<EuxNavRinasak>()!!
+
+    fun sedJournalstatuser(euxSedJournalstatus: EuxSedJournalstatus.Status = UKJENT) =
         euxNavRinasakRestTemplate
             .post()
             .uri("${euxNavRinasakUrl}/api/v1/sed/journalstatuser/finn")
@@ -25,14 +32,6 @@ class EuxNavRinasakClient(
             .retrieve()
             .body<SedJournalstatuserSearchResponseType>()!!
             .sedJournalstatuser
-
-
-    fun finn(rinasakId: Int) =
-        euxNavRinasakRestTemplate
-            .get()
-            .uri("${euxNavRinasakUrl}/api/v1/rinasaker/${rinasakId}")
-            .retrieve()
-            .body<EuxNavRinasak>()!!
 
     fun put(journalstatusPut: EuxSedJournalstatusPut) {
         euxNavRinasakRestTemplate

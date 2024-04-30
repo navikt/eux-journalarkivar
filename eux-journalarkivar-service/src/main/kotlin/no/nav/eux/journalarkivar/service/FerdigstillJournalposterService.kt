@@ -8,7 +8,6 @@ import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.JOURNALFOERT
 import no.nav.eux.journalarkivar.integration.eux.oppgave.client.EuxOppgaveClient
-import no.nav.eux.journalarkivar.integration.eux.rinaapi.client.EuxRinaApiClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.client.DokarkivClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBruker
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBrukerType
@@ -21,9 +20,8 @@ import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
 
 @Service
-class JournalService(
+class FerdigstillJournalposterService(
     val euxNavRinasakClient: EuxNavRinasakClient,
-    val euxRinaApiClient: EuxRinaApiClient,
     val euxJournalClient: EuxJournalClient,
     val safClient: SafClient,
     val dokarkivClient: DokarkivClient,
@@ -34,7 +32,7 @@ class JournalService(
 
     fun ferdigstillJournalposter() {
         clearMdc()
-        val euxSedJournalstatuser = euxNavRinasakClient.finn()
+        val euxSedJournalstatuser = euxNavRinasakClient.sedJournalstatuser()
         log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
         euxSedJournalstatuser.forEach { it.tryFerdigstillJournalpost() }
     }
