@@ -1,6 +1,5 @@
 package no.nav.eux.journalarkivar.webapp
 
-import no.nav.eux.journalarkivar.webapp.common.ferdigstillJournalposterUrl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
@@ -9,12 +8,12 @@ import org.springframework.http.HttpMethod
 class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
 
     @Test
-    fun `POST ferdigstillJournalposter - 204`() {
+    fun `POST arkivarprosess - 204`() {
         restTemplate
             .exchange<Void>(
-                ferdigstillJournalposterUrl,
+                "/api/v1/arkivarprosess/ferdigstill/execute",
                 HttpMethod.POST,
-                "{}".httpEntity
+                httpEntity()
             )
         println("Følgende requests ble utført:")
         requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }

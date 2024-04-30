@@ -1,6 +1,5 @@
 package no.nav.eux.journalarkivar.webapp
 
-import no.nav.eux.journalarkivar.webapp.common.feilregistrerJournalposterUrl
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpMethod
@@ -8,12 +7,12 @@ import org.springframework.http.HttpMethod
 class FeilregistrerJournalposterApiImplTest : AbstractApiImplTest() {
 
     @Test
-    fun `POST feilregistrerJournalposter - 204`() {
+    fun `POST arkivarprosess - 204`() {
         restTemplate
             .exchange<Void>(
-                feilregistrerJournalposterUrl,
+                "/api/v1/arkivarprosess/feilregistrer/execute",
                 HttpMethod.POST,
-                "{}".httpEntity
+                httpEntity()
             )
         println("Følgende requests ble utført:")
         requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }

@@ -17,5 +17,3 @@ paths:
     $ref: 'arkivarprosess/operations_rot.yaml'
   '/ferdigstillJournalposter':
     $ref: 'ferdigstill/operations_rot.yaml'
-  '/feilregistrerJournalposter':
-    $ref: 'feilregistrer/operations_rot.yaml'
