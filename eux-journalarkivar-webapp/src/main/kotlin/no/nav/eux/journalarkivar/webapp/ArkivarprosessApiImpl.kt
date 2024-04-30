@@ -4,6 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.journal.openapi.api.ArkivarprosessApi
 import no.nav.eux.journalarkivar.service.FeilregistrerJournalposterService
 import no.nav.eux.journalarkivar.service.FerdigstillJournalposterService
+import no.nav.eux.journalarkivar.service.clearMdc
 import no.nav.eux.journalarkivar.service.mdc
 import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.HttpStatus.BAD_REQUEST
@@ -21,6 +22,7 @@ class ArkivarprosessApiImpl(
 
     @Unprotected
     override fun arkivarprosess(arkivarprosess: String): ResponseEntity<Unit> {
+        clearMdc()
         mdc(arkivarprosess = arkivarprosess)
         log.info { "starter arkivarprosess..." }
         when (arkivarprosess) {
