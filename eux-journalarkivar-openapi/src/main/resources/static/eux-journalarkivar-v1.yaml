@@ -13,6 +13,8 @@ tags:
         API for å utføre operasjoner på journalposter
 
 paths:
+  '/arkivarprosess/{arkivarprosess}/execute':
+    $ref: 'arkivarprosess/operations_rot.yaml'
   '/ferdigstillJournalposter':
     $ref: 'ferdigstill/operations_rot.yaml'
   '/feilregistrerJournalposter':
