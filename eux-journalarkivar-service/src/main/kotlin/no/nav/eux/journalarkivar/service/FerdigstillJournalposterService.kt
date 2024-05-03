@@ -46,18 +46,16 @@ class FerdigstillJournalposterService(
         } catch (e: SakUtenFerdigstilteJournalposterException) {
             log.info { e.message }
         } catch (e: Exception) {
-            log.error(e) { "Feil ved ferdigstilling av journalpost" }
+            log.error(e) { "Feil ved ferdigstilling av journalpost: ${e.message}" }
         }
 
     fun EuxSedJournalstatus.ferdigstillJournalpost() {
         val navRinasak = euxNavRinasakClient.finn(rinasakId)
         val dokument = navRinasak
             .dokumenter
-            ?.single { it erSammeSedSom this }
-        when {
-            dokument != null -> ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
-            else -> log.info { "Fant ikke dokument for journalstatus" }
-        }
+            ?.firstOrNull { it erSammeSedSom this }
+            ?: throw RuntimeException("Fant ikke dokument i nav rinasak")
+        ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
         this settStatusTil JOURNALFOERT
     }
 
