@@ -1,5 +1,6 @@
 package no.nav.eux.journalarkivar.integration.external.saf.client
 
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.journalarkivar.integration.config.post
 import no.nav.eux.journalarkivar.integration.external.saf.model.*
 import org.springframework.beans.factory.annotation.Value
@@ -14,6 +15,8 @@ class SafClient(
     val safUrl: String,
     val safRestTemplate: RestTemplate
 ) {
+
+    val log = logger {}
 
     fun dokumentoversiktBrukerRoot(fnr: String): List<SafJournalpost> =
         safRestTemplate
@@ -56,9 +59,7 @@ class SafClient(
 
     fun tilknyttedeJournalposter(dokumentInfoId: String): List<SafJournalpost> =
         tilknyttedeJournalposterRoot(dokumentInfoId)
-            ?.data
-            ?.tilknyttedeJournalposter
-            ?: emptyList()
+            .tilknyttedeJournalposter
 
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
         tilknyttedeJournalposter(dokumentInfoId)
@@ -72,7 +73,14 @@ class SafClient(
             .accept(APPLICATION_JSON)
             .body(tilknyttedeJournalposterQuery(dokumentInfoId))
             .retrieve()
-            .body<SafTilknyttedeJournalposterRoot>()
+            .body<SafRoot<SafTilknyttedeJournalposterData>>()
+            .safData()
+
+    fun <T> SafRoot<T>?.safData(): T =
+        when (this!!.data) {
+            null -> throw RuntimeException("Feil fra SAF: ${errors?.joinToString { "${it.message}" }}")
+            else -> data!!
+        }
 }
 
 fun journalpostQuery(journalpostId: String) = GraphQlQuery(
