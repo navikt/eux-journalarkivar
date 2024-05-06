@@ -31,7 +31,6 @@ class FerdigstillJournalposterService(
     val log = logger {}
 
     fun ferdigstillJournalposter() {
-        clearMdc()
         val euxSedJournalstatuser = euxNavRinasakClient.sedJournalstatuser()
         log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
         euxSedJournalstatuser.forEach { it.tryFerdigstillJournalpost() }

@@ -20,7 +20,6 @@ class FeilregistrerJournalposterService(
     val log = logger {}
 
     fun feilregistrerJournalposter() {
-        clearMdc()
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
