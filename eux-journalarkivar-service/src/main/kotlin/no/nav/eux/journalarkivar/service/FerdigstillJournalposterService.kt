@@ -31,12 +31,14 @@ class FerdigstillJournalposterService(
     val log = logger {}
 
     fun ferdigstillJournalposter() {
-        val euxSedJournalstatuserUkjent = euxNavRinasakClient.sedJournalstatuser(UKJENT)
-        log.info { "${euxSedJournalstatuserUkjent.size} dokumenter har status ukjent" }
-        euxSedJournalstatuserUkjent.forEach { it.tryFerdigstillJournalpost() }
-        val euxSedJournalstatuserFeilregistrert = euxNavRinasakClient.sedJournalstatuser(FEILREGISTRERT)
-        log.info { "${euxSedJournalstatuserFeilregistrert.size} dokumenter har status feilregistrert" }
-        euxSedJournalstatuserFeilregistrert.forEach { it.tryFerdigstillJournalpost() }
+        euxNavRinasakClient
+            .sedJournalstatuser(UKJENT)
+            .also { log.info { "${it.size} dokumenter har status ukjent" } }
+            .forEach { it.tryFerdigstillJournalpost() }
+        euxNavRinasakClient
+            .sedJournalstatuser(FEILREGISTRERT)
+            .also { log.info { "${it.size} dokumenter har status feilregistrert" } }
+            .forEach { it.tryFerdigstillJournalpost() }
         clearMdc()
         log.info { "Ferdigstilling av journalposter utført" }
     }
