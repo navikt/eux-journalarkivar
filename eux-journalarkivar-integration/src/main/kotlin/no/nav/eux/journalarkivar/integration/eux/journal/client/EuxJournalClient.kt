@@ -1,6 +1,5 @@
 package no.nav.eux.journalarkivar.integration.eux.journal.client
 
-import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.journalarkivar.integration.config.patch
 import no.nav.eux.journalarkivar.integration.config.post
 import org.springframework.beans.factory.annotation.Value
@@ -14,8 +13,6 @@ class EuxJournalClient(
     val journalUrl: String,
     val euxJournalRestTemplate: RestTemplate
 ) {
-
-    val log = logger {}
 
     fun ferdigstill(journalpostId: String) {
         euxJournalRestTemplate
@@ -37,8 +34,7 @@ class EuxJournalClient(
     }
 
     infix fun settStatusAvbrytFor(journalpostId: String) =
-        log.info { "settStatusAvbrytFor $journalpostId (kke aktivert)" }
-//        = settStatusAvbryt(listOf(journalpostId))
+        settStatusAvbryt(listOf(journalpostId))
 
 }
 

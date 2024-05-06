@@ -23,12 +23,14 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(30)) }
+            .filter { it.opprettetTidspunkt.isBefore(now().minusHours(1)) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentInfoId }
             .also { log.info { "${it.size} har dokumentInfoId" } }
             .mapNotNull { it.journalpost }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
+            .filter { it.bruker == null }
+            .also { log.info { "${it.size} har ikke tilknyttet bruker" } }
             .filter { it.journalposttype == U }
             .also { log.info { "${it.size} er utgående og blir forsøkt feilregistrert" } }
             .forEach { it.feilregistrer() }

@@ -1,5 +1,6 @@
 package no.nav.eux.journalarkivar.webapp
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpMethod
@@ -16,7 +17,7 @@ class FeilregistrerJournalposterApiImplTest : AbstractApiImplTest() {
             )
         println("Følgende requests ble utført:")
         requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }
-//        assertThat(requestBodies["/api/v1/journalposter/settStatusAvbryt"])
-//            .isEqualTo("{\"journalpostIder\":[\"453802638\"]}")
+        assertThat(requestBodies["/api/v1/journalposter/settStatusAvbryt"])
+            .isEqualTo("{\"journalpostIder\":[\"453802638\"]}")
     }
 }
