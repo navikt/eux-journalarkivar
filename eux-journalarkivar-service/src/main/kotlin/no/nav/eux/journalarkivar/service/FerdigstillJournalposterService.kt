@@ -55,6 +55,7 @@ class FerdigstillJournalposterService(
             .dokumenter
             ?.firstOrNull { it erSammeSedSom this }
             ?: throw RuntimeException("Fant ikke dokument i nav rinasak")
+        mdc(sedType = dokument.sedType, dokumentInfoId = dokument.dokumentInfoId)
         ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
         this settStatusTil JOURNALFOERT
     }
@@ -63,7 +64,6 @@ class FerdigstillJournalposterService(
         navRinasak: EuxNavRinasak,
         dokumentInfoId: String
     ) {
-        mdc(dokumentInfoId = dokumentInfoId)
         log.info { "Forsøker ferdigstilling av journalpost..." }
         val journalpost = safClient
             .firstTilknyttetJournalpostOrNull(dokumentInfoId)
