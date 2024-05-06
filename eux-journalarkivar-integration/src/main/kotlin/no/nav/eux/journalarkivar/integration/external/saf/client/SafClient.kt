@@ -1,6 +1,5 @@
 package no.nav.eux.journalarkivar.integration.external.saf.client
 
-import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.journalarkivar.integration.config.post
 import no.nav.eux.journalarkivar.integration.external.saf.model.*
 import org.springframework.beans.factory.annotation.Value
@@ -16,8 +15,6 @@ class SafClient(
     val safRestTemplate: RestTemplate
 ) {
 
-    val log = logger {}
-
     fun dokumentoversiktBrukerRoot(fnr: String): List<SafJournalpost> =
         safRestTemplate
             .post()
@@ -26,11 +23,10 @@ class SafClient(
             .accept(APPLICATION_JSON)
             .body(dokumentoversiktBrukerQuery(fnr))
             .retrieve()
-            .body<SafDokumentoversiktBrukerRoot>()
-            ?.data
-            ?.dokumentoversiktBruker
-            ?.journalposter
-            ?: emptyList()
+            .body<SafRoot<SafDokumentoversiktBrukerData>>()
+            .safData()
+            .dokumentoversiktBruker
+            .journalposter
 
     fun safSaker(fnr: String): List<SafSak> =
         safRestTemplate
@@ -40,10 +36,9 @@ class SafClient(
             .accept(APPLICATION_JSON)
             .body(sakerQuery(fnr))
             .retrieve()
-            .body<SafSakerRoot>()
-            ?.data
-            ?.saker
-            ?: emptyList()
+            .body<SafRoot<SafSakerData>>()
+            .safData()
+            .saker
 
     fun safJournalpostOrNull(journalpostId: String): SafJournalpost? =
         safRestTemplate
@@ -53,9 +48,9 @@ class SafClient(
             .accept(APPLICATION_JSON)
             .body(journalpostQuery(journalpostId))
             .retrieve()
-            .body<SafJournalpostRoot>()
-            ?.data
-            ?.journalpost
+            .body<SafRoot<SafJournalpostData>>()
+            .safData()
+            .journalpost
 
     fun tilknyttedeJournalposter(dokumentInfoId: String): List<SafJournalpost> =
         tilknyttedeJournalposterRoot(dokumentInfoId)
