@@ -6,7 +6,7 @@ import no.nav.eux.journalarkivar.integration.eux.navrinasak.client.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.JOURNALFOERT
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.*
 import no.nav.eux.journalarkivar.integration.eux.oppgave.client.EuxOppgaveClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.client.DokarkivClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBruker
@@ -31,9 +31,12 @@ class FerdigstillJournalposterService(
     val log = logger {}
 
     fun ferdigstillJournalposter() {
-        val euxSedJournalstatuser = euxNavRinasakClient.sedJournalstatuser()
-        log.info { "${euxSedJournalstatuser.size} dokumenter har ukjent journalføringsstatus" }
-        euxSedJournalstatuser.forEach { it.tryFerdigstillJournalpost() }
+        val euxSedJournalstatuserUkjent = euxNavRinasakClient.sedJournalstatuser(UKJENT)
+        log.info { "${euxSedJournalstatuserUkjent.size} dokumenter har status ukjent" }
+        euxSedJournalstatuserUkjent.forEach { it.tryFerdigstillJournalpost() }
+        val euxSedJournalstatuserFeilregistrert = euxNavRinasakClient.sedJournalstatuser(FEILREGISTRERT)
+        log.info { "${euxSedJournalstatuserFeilregistrert.size} dokumenter har status feilregistrert" }
+        euxSedJournalstatuserFeilregistrert.forEach { it.tryFerdigstillJournalpost() }
         clearMdc()
         log.info { "Ferdigstilling av journalposter utført" }
     }
