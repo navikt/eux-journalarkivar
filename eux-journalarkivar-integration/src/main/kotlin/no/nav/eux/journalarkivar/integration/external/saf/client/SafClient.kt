@@ -52,15 +52,7 @@ class SafClient(
             .safData()
             .journalpost
 
-    fun tilknyttedeJournalposter(dokumentInfoId: String): List<SafJournalpost> =
-        tilknyttedeJournalposterRoot(dokumentInfoId)
-            .tilknyttedeJournalposter
-
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
-        tilknyttedeJournalposter(dokumentInfoId)
-            .firstOrNull()
-
-    fun tilknyttedeJournalposterRoot(dokumentInfoId: String) =
         safRestTemplate
             .post()
             .uri("$safUrl/graphql")
@@ -70,6 +62,8 @@ class SafClient(
             .retrieve()
             .body<SafRoot<SafTilknyttedeJournalposterData>>()
             .safData()
+            .tilknyttedeJournalposter
+            .firstOrNull()
 
     fun <T> SafRoot<T>?.safData(): T =
         when (this!!.data) {

@@ -9,9 +9,6 @@ post:
       name: arkivarprosess
       schema:
         type: string
-        enum:
-          - ferdigstill
-          - feilregistrer
       required: true
       description: Navnet på prosessen som skal startes
 
