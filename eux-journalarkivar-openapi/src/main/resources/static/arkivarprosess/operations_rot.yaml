@@ -10,7 +10,10 @@ post:
       schema:
         type: string
       required: true
-      description: Navnet på prosessen som skal startes
+      description: |
+        Navnet på prosessen som skal startes:
+          * `ferdigstill` - Ferdigstiller journalposter i dokarkiv der annen journalpost er journalført
+          * `feilregistrer` - Feilregistrerer journalposter i dokarkiv
 
   responses:
     '204':
