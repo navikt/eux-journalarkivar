@@ -53,9 +53,9 @@ application:
     scope: api://dev-fss.teamdokumenthandtering.saf-q1/.default
 
   dokarkiv:
-    host: dokarkiv-q1.dev-fss-pub.nais.io
-    endpoint: https://dokarkiv-q1.dev-fss-pub.nais.io
-    scope: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
+    host: dokarkiv.dev-fss-pub.nais.io
+    endpoint: https://dokarkiv.dev-fss-pub.nais.io
+    scope: api://dev-fss.teamdokumenthandtering.dokarkiv-q1/.default
 
 cluster:
   fss: dev-fss
