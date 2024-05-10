@@ -10,7 +10,6 @@ import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime.now
 
 @Service
 class FeilregistrerJournalposterService(
@@ -25,7 +24,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it.opprettetTidspunkt.isBefore(now()) }
+//            .filter { it.opprettetTidspunkt.isBefore(now()) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
