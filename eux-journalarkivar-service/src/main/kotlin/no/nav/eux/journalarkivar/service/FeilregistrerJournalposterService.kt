@@ -10,6 +10,8 @@ import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
 import org.springframework.stereotype.Service
+import java.time.OffsetDateTime
+import java.time.OffsetDateTime.now
 
 @Service
 class FeilregistrerJournalposterService(
@@ -24,7 +26,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-//            .filter { it.opprettetTidspunkt.isBefore(now()) }
+            .filter { it minst30DagerFør now() }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
@@ -84,6 +86,17 @@ class FeilregistrerJournalposterService(
             log.error(e) { "Fant ikke journalpost for dokumentInfoId: $dokumentInfoId" }
             throw e
         }
+
+    infix fun EuxSedJournalstatus.minst30DagerFør(date: OffsetDateTime): Boolean {
+        val minst30DagerFør = opprettetTidspunkt.isBefore(date)
+        if (minst30DagerFør) {
+            log.info { "$opprettetTidspunkt er minst 30 dager før $date" }
+            return true
+        } else {
+            log.info { "$opprettetTidspunkt er ikke minst 30 dager før $date" }
+            return true
+        }
+    }
 
     data class DokumentForFeilregistrering(
         val euxSedJournalstatus: EuxSedJournalstatus,
