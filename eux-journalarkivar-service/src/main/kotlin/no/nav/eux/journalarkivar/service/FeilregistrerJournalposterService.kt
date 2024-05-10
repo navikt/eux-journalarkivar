@@ -26,7 +26,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it minst30DagerFør now() }
+            .filter { it minst30DaysBefore now() }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
@@ -87,9 +87,9 @@ class FeilregistrerJournalposterService(
             throw e
         }
 
-    infix fun EuxSedJournalstatus.minst30DagerFør(date: OffsetDateTime): Boolean {
-        val minst30DagerFør = opprettetTidspunkt.isBefore(date)
-        if (minst30DagerFør) {
+    infix fun EuxSedJournalstatus.minst30DaysBefore(date: OffsetDateTime): Boolean {
+        val minst30DaysBefore = opprettetTidspunkt.isBefore(date)
+        if (minst30DaysBefore) {
             log.info { "$opprettetTidspunkt er minst 30 dager før $date" }
             return true
         } else {
