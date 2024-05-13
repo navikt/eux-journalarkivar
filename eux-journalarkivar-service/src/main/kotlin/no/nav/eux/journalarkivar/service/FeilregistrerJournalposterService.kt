@@ -24,7 +24,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(30)) }
+            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(5)) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
