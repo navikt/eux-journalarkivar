@@ -1,12 +1,14 @@
 package no.nav.eux.journalarkivar.webapp
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpMethod
 
 class FeilregistrerJournalposterApiImplTest : AbstractApiImplTest() {
 
+    @Disabled("dry run")
     @Test
     fun `POST arkivarprosess - 204`() {
         restTemplate

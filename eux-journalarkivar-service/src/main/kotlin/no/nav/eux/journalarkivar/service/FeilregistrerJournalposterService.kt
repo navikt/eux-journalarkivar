@@ -5,12 +5,10 @@ import no.nav.eux.journalarkivar.integration.eux.journal.client.EuxJournalClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.client.EuxNavRinasakClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.FEILREGISTRERT
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime
 import java.time.OffsetDateTime.now
 
 @Service
@@ -26,7 +24,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it minst30DaysBefore now() }
+            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(30)) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
@@ -46,13 +44,14 @@ class FeilregistrerJournalposterService(
             dokumentInfoId = dokument.dokumentInfoId,
             journalpostId = journalpost.journalpostId
         )
-        try {
-            euxJournalClient settStatusAvbrytFor journalpost.journalpostId
-            log.info { "Journalpost feilregistrert" }
-            euxSedJournalstatus settStatusTil FEILREGISTRERT
-        } catch (e: RuntimeException) {
-            log.error(e) { "Feilregistrering feilet" }
-        }
+        log.info { "Feilregistrerer journalpost" }
+//        try {
+//            euxJournalClient settStatusAvbrytFor journalpost.journalpostId
+//            log.info { "Journalpost feilregistrert" }
+//            euxSedJournalstatus settStatusTil FEILREGISTRERT
+//        } catch (e: RuntimeException) {
+//            log.error(e) { "Feilregistrering feilet" }
+//        }
     }
 
     infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
@@ -86,17 +85,6 @@ class FeilregistrerJournalposterService(
             log.error(e) { "Fant ikke journalpost for dokumentInfoId: $dokumentInfoId" }
             throw e
         }
-
-    infix fun EuxSedJournalstatus.minst30DaysBefore(date: OffsetDateTime): Boolean {
-        val minst30DaysBefore = opprettetTidspunkt.isBefore(date)
-        if (minst30DaysBefore) {
-            log.info { "$opprettetTidspunkt er minst 30 dager før $date" }
-            return true
-        } else {
-            log.info { "$opprettetTidspunkt er ikke minst 30 dager før $date" }
-            return true
-        }
-    }
 
     data class DokumentForFeilregistrering(
         val euxSedJournalstatus: EuxSedJournalstatus,
