@@ -5,6 +5,7 @@ import no.nav.eux.journalarkivar.integration.eux.journal.client.EuxJournalClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.client.EuxNavRinasakClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.FEILREGISTRERT
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
@@ -24,7 +25,7 @@ class FeilregistrerJournalposterService(
         euxNavRinasakClient
             .sedJournalstatuser()
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
-            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(5)) }
+            .filter { it.opprettetTidspunkt.isBefore(now().minusDays(30)) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
             .mapNotNull { it.dokumentForFeilregistrering() }
             .also { log.info { "${it.size} har tilknyttet journalpost" } }
@@ -44,14 +45,13 @@ class FeilregistrerJournalposterService(
             dokumentInfoId = dokument.dokumentInfoId,
             journalpostId = journalpost.journalpostId
         )
-        log.info { "Feilregistrerer journalpost" }
-//        try {
-//            euxJournalClient settStatusAvbrytFor journalpost.journalpostId
-//            log.info { "Journalpost feilregistrert" }
-//            euxSedJournalstatus settStatusTil FEILREGISTRERT
-//        } catch (e: RuntimeException) {
-//            log.error(e) { "Feilregistrering feilet" }
-//        }
+        try {
+            euxJournalClient settStatusAvbrytFor journalpost.journalpostId
+            log.info { "Journalpost feilregistrert" }
+            euxSedJournalstatus settStatusTil FEILREGISTRERT
+        } catch (e: RuntimeException) {
+            log.error(e) { "Feilregistrering feilet" }
+        }
     }
 
     infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
