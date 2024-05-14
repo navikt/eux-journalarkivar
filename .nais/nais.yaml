@@ -55,9 +55,6 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: {{ application.eux-journalarkivar-naisjob.name }}
-          namespace: {{ application.eux-journalarkivar-naisjob.namespace }}
-          cluster: {{ cluster.gcp }}
         - application: {{ application.eux-journalarkivar-feilregistrer-naisjob.name }}
           namespace: {{ application.eux-journalarkivar-feilregistrer-naisjob.namespace }}
           cluster: {{ cluster.gcp }}

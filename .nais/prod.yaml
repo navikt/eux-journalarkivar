@@ -2,10 +2,6 @@ name: eux-journalarkivar
 ingress: https://eux-journalarkivar.intern.nav.no
 
 application:
-  eux-journalarkivar-naisjob:
-    name: eux-journalarkivar-naisjob
-    namespace: eessibasis
-
   eux-journalarkivar-feilregistrer-naisjob:
     name: eux-journalarkivar-feilregistrer-naisjob
     namespace: eessibasis
