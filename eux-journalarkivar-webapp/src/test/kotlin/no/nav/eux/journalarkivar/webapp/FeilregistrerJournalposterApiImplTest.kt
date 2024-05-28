@@ -18,6 +18,6 @@ class FeilregistrerJournalposterApiImplTest : AbstractApiImplTest() {
         println("Følgende requests ble utført:")
         requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }
         assertThat(requestBodies["/api/v1/journalposter/settStatusAvbryt"])
-            .isEqualTo("{\"journalpostIder\":[\"453802638\"]}")
+            .isEqualTo("{\"journalpostIder\":[\"453802641\"]}")
     }
 }

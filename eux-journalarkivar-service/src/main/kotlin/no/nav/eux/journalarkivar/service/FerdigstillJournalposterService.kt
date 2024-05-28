@@ -15,6 +15,7 @@ import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJou
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivSakOppdatering
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.I
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
 import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
@@ -68,7 +69,6 @@ class FerdigstillJournalposterService(
         navRinasak: EuxNavRinasak,
         dokumentInfoId: String
     ) {
-        log.info { "Forsøker ferdigstilling av journalpost..." }
         val journalpost = safClient
             .firstTilknyttetJournalpostOrNull(dokumentInfoId)
             ?: throw RuntimeException("Fant ikke journalpost for dokumentInfoId")
@@ -104,13 +104,13 @@ class FerdigstillJournalposterService(
         this oppdaterMed ferdigstiltJournalpost
         euxJournalClient.ferdigstill(journalpostId)
         log.info { "Ferdigstilling av journalpost utført" }
-        euxOppgaveClient.ferdigstillOppgave(
-            journalpostId = journalpostId,
-            personident = ferdigstiltJournalpost.bruker!!.id
-        )
-        log.info { "Tilhørende oppgave ferdigstilt" }
-        euxOppgaveClient.behandleSed(journalpostId)
-        log.info { "Behandle sed oppgave opprettet" }
+        when (journalposttype) {
+            I -> {
+                ferdigstillTilknyttedeOppgaver(journalpostId, ferdigstiltJournalpost.bruker!!.id)
+                lagBehandleSedOppgave(journalpostId)
+            }
+            else -> log.info { "Journalposttype $journalposttype, lager ikke behandle sed oppgave" }
+        }
     }
 
     infix fun SafJournalpost.oppdaterMed(eksisterendeJournalpost: SafJournalpost) {
@@ -133,6 +133,19 @@ class FerdigstillJournalposterService(
         )
         dokarkivClient.oppdater(journalpostId, dokarkivOppdatering)
         log.info { "Journalpost oppdatert" }
+    }
+
+    fun ferdigstillTilknyttedeOppgaver(journalpostId: String, personident: String) {
+        euxOppgaveClient.ferdigstillOppgave(
+            journalpostId = journalpostId,
+            personident = personident
+        )
+        log.info { "Ferdigstilling av tilhørende oppgaver utført" }
+    }
+
+    fun lagBehandleSedOppgave(journalpostId: String) {
+        euxOppgaveClient.behandleSed(journalpostId)
+        log.info { "Behandle sed oppgave opprettet" }
     }
 }
 

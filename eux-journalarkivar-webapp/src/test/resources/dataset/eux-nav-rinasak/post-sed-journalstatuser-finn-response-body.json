@@ -19,6 +19,16 @@
       "endretTidspunkt": "2023-12-07T14:27:20.33111Z",
       "opprettetBruker": "testUser",
       "opprettetTidspunkt": "2023-12-07T14:27:20.33111Z"
+    },
+    {
+      "rinasakId": 1444522,
+      "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+      "sedVersjon": 2,
+      "sedJournalstatus": "UKJENT",
+      "endretBruker": "testUser",
+      "endretTidspunkt": "2023-12-07T14:27:20.33111Z",
+      "opprettetBruker": "testUser",
+      "opprettetTidspunkt": "2023-12-07T14:27:20.33111Z"
     }
   ]
 }

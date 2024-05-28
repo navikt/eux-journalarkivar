@@ -2,15 +2,15 @@
   "data": {
     "tilknyttedeJournalposter": [
       {
-        "journalpostId": "453802638",
+        "journalpostId": "453802641",
         "tittel": "H001 Melding/anmodning om informasjon",
         "journalstatus": "MOTTATT",
-        "journalposttype": "I",
+        "journalposttype": "U",
         "eksternReferanseId": "1444520_aa7d09fc470c4b86af9d315d12f5a3aa_1",
         "tema": "KON",
         "dokumenter": [
           {
-            "dokumentInfoId": "454221906",
+            "dokumentInfoId": "454221909",
             "tittel": "1",
             "brevkode": "1"
           }
@@ -18,7 +18,7 @@
         "tilleggsopplysninger": [
           {
             "nokkel": "rinaSakId",
-            "verdi": "1447997"
+            "verdi": "1444522"
           }
         ]
       }

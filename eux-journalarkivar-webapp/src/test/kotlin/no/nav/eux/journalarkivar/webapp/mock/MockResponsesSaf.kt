@@ -9,6 +9,7 @@ fun safResponse(body: String) =
         body.contains("454221906") -> document("454221906")
         body.contains("454221907") -> document("454221907")
         body.contains("454221908") -> document("454221908")
+        body.contains("454221909") -> document("454221909")
         else -> throw RuntimeException("No SAF response defined for $body}")
     }
 

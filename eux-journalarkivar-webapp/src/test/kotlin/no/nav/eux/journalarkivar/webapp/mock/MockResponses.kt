@@ -39,6 +39,7 @@ fun mockResponseGet(request: RecordedRequest) =
     when (request.uriEndsWith) {
         "/api/v1/rinasaker/1444520" -> getEuxNavRinasakResponse(1444520)
         "/api/v1/rinasaker/1444521" -> getEuxNavRinasakResponse(1444521)
+        "/api/v1/rinasaker/1444522" -> getEuxNavRinasakResponse(1444522)
         getOppgaverUri -> getOppgaverResponse()
         else -> defaultResponse()
     }
