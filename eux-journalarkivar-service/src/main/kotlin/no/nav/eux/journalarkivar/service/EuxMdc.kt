@@ -22,8 +22,14 @@ fun <T> T.mdc(
     return this
 }
 
-fun clearMdc() {
-    MDC.clear()
+fun clearLocalMdc() {
+    MDC.remove("arkivarprosess")
+    MDC.remove("rinaSakId")
+    MDC.remove("dokumentInfoId")
+    MDC.remove("sedId")
+    MDC.remove("sedVersjon")
+    MDC.remove("sedType")
+    MDC.remove("journalpostId")
 }
 
 private infix fun String.leggTil(value: Any?) {

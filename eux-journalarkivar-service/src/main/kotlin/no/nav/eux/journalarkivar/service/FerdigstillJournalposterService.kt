@@ -40,7 +40,7 @@ class FerdigstillJournalposterService(
             .sedJournalstatuser(FEILREGISTRERT)
             .also { log.info { "${it.size} dokumenter har status feilregistrert" } }
             .forEach { it.tryFerdigstillJournalpost() }
-        clearMdc()
+        clearLocalMdc()
         log.info { "Ferdigstilling av journalposter utført" }
     }
 
@@ -82,7 +82,7 @@ class FerdigstillJournalposterService(
 
     infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
         euxNavRinasakClient.put(copy(sedJournalstatus = journalstatus).put)
-        log.info { "Journalstatus satt til $journalstatus" }
+        log.info { "Sed journalstatus satt til $journalstatus" }
     }
 
     fun SafJournalpost.ferdigstillJournalpost(
