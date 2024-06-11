@@ -36,6 +36,7 @@ class FerdigstillJournalposterService(
             .sedJournalstatuser(UKJENT)
             .also { log.info { "${it.size} dokumenter har status ukjent" } }
             .forEach { it.tryFerdigstillJournalpost() }
+        clearLocalMdc()
         euxNavRinasakClient
             .sedJournalstatuser(FEILREGISTRERT)
             .also { log.info { "${it.size} dokumenter har status feilregistrert" } }
@@ -46,7 +47,7 @@ class FerdigstillJournalposterService(
 
     fun EuxSedJournalstatus.tryFerdigstillJournalpost() =
         try {
-            mdc(rinasakId = rinasakId, sedId = sedId, sedVersjon = sedVersjon)
+            setAndClearLocalMdc(rinasakId = rinasakId, sedId = sedId, sedVersjon = sedVersjon)
             ferdigstillJournalpost()
         } catch (e: SakUtenFerdigstilteJournalposterException) {
             log.info { e.message }

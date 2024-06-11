@@ -32,6 +32,27 @@ fun clearLocalMdc() {
     MDC.remove("journalpostId")
 }
 
+fun <T> T.setAndClearLocalMdc(
+    arkivarprosess: String? = null,
+    rinasakId: Int? = null,
+    dokumentInfoId: String? = null,
+    sedId: UUID? = null,
+    sedVersjon: Int? = null,
+    sedType : String? = null,
+    journalpostId: String? = null,
+) {
+    clearLocalMdc()
+    mdc(
+        arkivarprosess = arkivarprosess,
+        rinasakId = rinasakId,
+        dokumentInfoId = dokumentInfoId,
+        sedId = sedId,
+        sedVersjon = sedVersjon,
+        sedType = sedType,
+        journalpostId = journalpostId
+    )
+}
+
 private infix fun String.leggTil(value: Any?) {
     if (value != null) MDC.put(this, "$value")
 }
