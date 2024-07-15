@@ -16,6 +16,7 @@ import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivSak
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.I
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalstatus
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
 import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
@@ -77,6 +78,7 @@ class FerdigstillJournalposterService(
         log.info { "Journalpost har status ${journalpost.journalstatus}" }
         when {
             journalpost.journalstatus.erJournalfoert -> log.info { "Journalpost er allerede journalført" }
+            journalpost.journalstatus == SafJournalstatus.UTGAAR -> log.info { "Journalpost er utgått"}
             else -> journalpost.ferdigstillJournalpost(navRinasak)
         }
     }
