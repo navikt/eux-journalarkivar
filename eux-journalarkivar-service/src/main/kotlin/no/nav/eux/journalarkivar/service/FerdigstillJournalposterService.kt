@@ -51,7 +51,7 @@ class FerdigstillJournalposterService(
             setAndClearLocalMdc(rinasakId = rinasakId, sedId = sedId, sedVersjon = sedVersjon)
             ferdigstillJournalpost()
         } catch (e: SakUtenFerdigstilteJournalposterException) {
-            log.info { e.message }
+            log.debug { e.message }
         } catch (e: Exception) {
             log.error(e) { "Feil ved ferdigstilling av journalpost: ${e.message}" }
         }
@@ -75,7 +75,7 @@ class FerdigstillJournalposterService(
             .firstTilknyttetJournalpostOrNull(dokumentInfoId)
             ?: throw RuntimeException("Fant ikke journalpost for dokumentInfoId")
         mdc(journalpostId = journalpost.journalpostId)
-        log.info { "Journalpost har status ${journalpost.journalstatus}" }
+        log.debug { "Journalpost har status ${journalpost.journalstatus}" }
         when {
             journalpost.journalstatus.erJournalfoert -> log.info { "Journalpost er allerede journalført" }
             journalpost.journalstatus == SafJournalstatus.UTGAAR -> log.info { "Journalpost er utgått"}
