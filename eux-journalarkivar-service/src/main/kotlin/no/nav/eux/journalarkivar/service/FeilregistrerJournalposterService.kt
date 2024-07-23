@@ -70,11 +70,16 @@ class FeilregistrerJournalposterService(
 
     fun EuxSedJournalstatus.dokument() =
         try {
+            mdc(
+                rinasakId = rinasakId,
+                sedId = sedId,
+                sedVersjon = sedVersjon,
+            )
             euxNavRinasakClient.finn(rinasakId)
                 .dokumenter!!
                 .single { it erSammeSedSom this }
         } catch (e: RuntimeException) {
-            log.error(e) { "Fant ikke dokument i nav rinasak: $rinasakId" }
+            log.error(e) { "Fant ikke dokument i nav rinasak" }
             throw e
         }
 

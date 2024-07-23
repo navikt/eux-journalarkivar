@@ -32,7 +32,6 @@ fun clearLocalMdc() {
 }
 
 fun <T> T.setAndClearLocalMdc(
-    arkivarprosess: String? = null,
     rinasakId: Int? = null,
     dokumentInfoId: String? = null,
     sedId: UUID? = null,
@@ -42,7 +41,6 @@ fun <T> T.setAndClearLocalMdc(
 ) {
     clearLocalMdc()
     mdc(
-        arkivarprosess = arkivarprosess,
         rinasakId = rinasakId,
         dokumentInfoId = dokumentInfoId,
         sedId = sedId,
