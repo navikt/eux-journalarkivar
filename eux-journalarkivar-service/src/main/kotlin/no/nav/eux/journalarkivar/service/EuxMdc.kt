@@ -23,7 +23,7 @@ fun <T> T.mdc(
 }
 
 fun clearLocalMdc() {
-    MDC.remove("rinaSakId")
+    MDC.remove("rinasakId")
     MDC.remove("dokumentInfoId")
     MDC.remove("sedId")
     MDC.remove("sedVersjon")
