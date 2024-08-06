@@ -175,6 +175,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
+                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
             <plugin>
