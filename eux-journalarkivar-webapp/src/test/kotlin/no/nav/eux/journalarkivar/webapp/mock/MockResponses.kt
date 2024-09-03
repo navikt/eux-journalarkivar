@@ -23,6 +23,8 @@ fun mockResponsePost(request: RecordedRequest, body: String) =
         "/api/v1/oppgaver" -> oppgaverResponse()
         "/api/v1/oppgaver/tildelEnhetsnr" -> tildelEnhetsnrResponse(body)
         "/api/v1/journalposter/settStatusAvbryt" -> response200()
+        "/api/v1/oppgaver/ferdigstill" -> response200()
+        "/api/v1/oppgaver/behandleSedFraJournalpostId" -> response200()
         else -> defaultResponse()
     }
 

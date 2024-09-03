@@ -7,6 +7,8 @@ import no.nav.eux.journalarkivar.integration.eux.oppgave.model.FerdigstillOppgav
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.retry.annotation.Backoff
+import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
@@ -17,6 +19,7 @@ class EuxOppgaveClient(
     val euxOppgaveRestTemplate: RestTemplate
 ) {
 
+    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
     fun ferdigstillOppgave(journalpostId: String, personident: String) {
         euxOppgaveRestTemplate
             .post()
@@ -33,6 +36,7 @@ class EuxOppgaveClient(
             .toBodilessEntity()
     }
 
+    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
     fun behandleSed(journalpostId: String) {
         euxOppgaveRestTemplate
             .post()

@@ -4,6 +4,8 @@ import no.nav.eux.journalarkivar.integration.config.post
 import no.nav.eux.journalarkivar.integration.external.saf.model.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.retry.annotation.Backoff
+import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.body
@@ -52,6 +54,7 @@ class SafClient(
             .safData()
             .journalpost
 
+    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
         safRestTemplate
             .post()
