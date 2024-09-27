@@ -10,4 +10,3 @@ Journalarkivar for EUX
 #### Avhengigheter
 
 * JDK 21
-
