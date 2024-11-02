@@ -33,6 +33,12 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>no.nav.eux</groupId>
+            <artifactId>eux-logging</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

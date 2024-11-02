@@ -9,6 +9,7 @@ import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournals
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
+import no.nav.eux.logging.mdc
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime.now
 

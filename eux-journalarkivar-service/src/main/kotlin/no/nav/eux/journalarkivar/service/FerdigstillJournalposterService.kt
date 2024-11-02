@@ -20,7 +20,9 @@ import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalstatus
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
 import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
-
+import no.nav.eux.logging.mdc
+import no.nav.eux.logging.clearLocalMdc
+import no.nav.eux.logging.setAndClearLocalMdc
 @Service
 class FerdigstillJournalposterService(
     val euxNavRinasakClient: EuxNavRinasakClient,
