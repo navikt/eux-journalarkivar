@@ -18,6 +18,7 @@ import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.I
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalstatus
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
+import no.nav.eux.journalarkivar.model.NavRinasakManglerException
 import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
 import org.springframework.stereotype.Service
 import no.nav.eux.logging.mdc
@@ -54,6 +55,8 @@ class FerdigstillJournalposterService(
             ferdigstillJournalpost()
         } catch (e: SakUtenFerdigstilteJournalposterException) {
             log.debug { e.message }
+        } catch (e: NavRinasakManglerException) {
+            log.warn { "Nav rinasak mangler, republisering av sed event vil bli forsøkt (ikke implementert)" }
         } catch (e: Exception) {
             log.error(e) { "Feil ved ferdigstilling av journalpost: ${e.message}" }
         }
@@ -63,7 +66,7 @@ class FerdigstillJournalposterService(
         val dokument = navRinasak
             .dokumenter
             ?.firstOrNull { it erSammeSedSom this }
-            ?: throw RuntimeException("Fant ikke dokument i nav rinasak")
+            ?: throw NavRinasakManglerException()
         mdc(sedType = dokument.sedType, dokumentInfoId = dokument.dokumentInfoId)
         ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
         this settStatusTil JOURNALFOERT
