@@ -2,6 +2,11 @@ spring:
   main:
     banner-mode: "off"
 
+logging:
+  structured:
+    format:
+      console: logstash
+
 # noinspection SpringBootApplicationYaml
 no.nav.security.jwt:
   client:
