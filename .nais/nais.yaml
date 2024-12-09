@@ -65,11 +65,11 @@ spec:
       external:
         - host: {{ application.saf.host }}
         - host: {{ application.dokarkiv.host }}
-        - host: {{ application.eux-rina-api.host }}
       rules:
         - application: {{ application.eux-oppgave.name }}
         - application: {{ application.eux-journal.name }}
         - application: {{ application.eux-nav-rinasak.name }}
+        - application: {{ application.eux-rina-api.name }}
   env:
     - name: CLIENT_EUXNAVRINASAK_ENDPOINT
       value: {{ application.eux-nav-rinasak.endpoint }}

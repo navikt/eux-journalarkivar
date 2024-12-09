@@ -32,10 +32,10 @@ application:
 
   eux-rina-api:
     name: eux-rina-api-q2
-    endpoint: https://eux-rina-api-q2.dev-fss-pub.nais.io
-    scope: api://dev-fss.eessibasis.eux-rina-api-q2/.default
+    endpoint: http://eux-rina-api-q2
+    scope: api://dev-gcp.eessibasis.eux-rina-api-q2/.default
     namespace: eessibasis
-    host: eux-rina-api-q2.dev-fss-pub.nais.io
+    host: eux-rina-api-q2
 
   eux-nav-rinasak:
     name: eux-nav-rinasak-q2

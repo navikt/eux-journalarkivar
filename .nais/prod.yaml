@@ -32,8 +32,8 @@ application:
 
   eux-rina-api:
     name: eux-rina-api
-    endpoint: https://eux-rina-api.prod-fss-pub.nais.io
-    host: eux-rina-api.prod-fss-pub.nais.io
+    endpoint: http://eux-rina-api
+    host: eux-rina-api
     namespace: eessibasis
     scope: api://prod-gcp.eessibasis.eux-nav-rinasak/.default
 
