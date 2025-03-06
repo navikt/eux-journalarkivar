@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service
 import no.nav.eux.logging.mdc
 import no.nav.eux.logging.clearLocalMdc
 import no.nav.eux.logging.setAndClearLocalMdc
+
 @Service
 class FerdigstillJournalposterService(
     val euxNavRinasakClient: EuxNavRinasakClient,
@@ -80,7 +81,6 @@ class FerdigstillJournalposterService(
         log.debug { "Journalpost har status ${journalpost.journalstatus}" }
         when {
             journalpost.journalstatus.erJournalfoert -> log.info { "Journalpost er allerede journalført" }
-            journalpost.journalstatus == SafJournalstatus.UTGAAR -> log.info { "Journalpost er utgått"}
             journalpost.journalstatus == SafJournalstatus.FEILREGISTRERT -> log.info { "Journalpost er feilregistrert"}
             else -> journalpost.ferdigstillJournalpost(navRinasak)
         }
