@@ -9,4 +9,5 @@ data class SafJournalpost(
     val tilleggsopplysninger: List<SafTilleggsopplysninger>,
     val sak: SafSak?,
     val bruker: SafBruker?,
+    val avsenderMottaker: SafAvsenderMottaker?
 )

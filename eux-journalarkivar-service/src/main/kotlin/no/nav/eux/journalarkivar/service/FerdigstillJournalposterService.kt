@@ -8,6 +8,7 @@ import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxNavRinasak
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.*
 import no.nav.eux.journalarkivar.integration.eux.oppgave.client.EuxOppgaveClient
+import no.nav.eux.journalarkivar.integration.eux.rinaapi.client.EuxRinaApiClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.client.DokarkivClient
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBruker
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivBrukerType
@@ -19,10 +20,10 @@ import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpostty
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalstatus
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafSak
 import no.nav.eux.journalarkivar.model.SakUtenFerdigstilteJournalposterException
-import org.springframework.stereotype.Service
-import no.nav.eux.logging.mdc
 import no.nav.eux.logging.clearLocalMdc
+import no.nav.eux.logging.mdc
 import no.nav.eux.logging.setAndClearLocalMdc
+import org.springframework.stereotype.Service
 
 @Service
 class FerdigstillJournalposterService(
@@ -31,6 +32,7 @@ class FerdigstillJournalposterService(
     val safClient: SafClient,
     val dokarkivClient: DokarkivClient,
     val euxOppgaveClient: EuxOppgaveClient,
+    val euxRinaApiClient: EuxRinaApiClient,
 ) {
 
     val log = logger {}
@@ -94,6 +96,8 @@ class FerdigstillJournalposterService(
     fun SafJournalpost.ferdigstillJournalpost(
         navRinasak: EuxNavRinasak,
     ) {
+        if (avsenderMottaker?.navn.isNullOrBlank())
+            oppdaterAvsenderMottakerNavn(navRinasak)
         val ferdigstiltJournalpost = navRinasak.firstFerdigstiltJournalpostOrNull()
         when {
             ferdigstiltJournalpost != null -> this ferdigstillMed ferdigstiltJournalpost
@@ -152,6 +156,16 @@ class FerdigstillJournalposterService(
     fun lagBehandleSedOppgave(journalpostId: String) {
         euxOppgaveClient.behandleSed(journalpostId)
         log.info { "Behandle sed oppgave opprettet" }
+    }
+
+    fun SafJournalpost.oppdaterAvsenderMottakerNavn(navRinasak: EuxNavRinasak) {
+        val rinasak = euxRinaApiClient.euxRinaSakOversikt(navRinasak.rinasakId)
+        val avsenderMottakerNavn = if (journalposttype == I)
+            rinasak.motpartFormatertNavn
+        else
+            rinasak.navInstitusjonNavn
+        dokarkivClient.oppdater(journalpostId, avsenderMottakerNavn)
+        log.info { "Oppdaterte avsender mottaker i dokarkiv" }
     }
 }
 

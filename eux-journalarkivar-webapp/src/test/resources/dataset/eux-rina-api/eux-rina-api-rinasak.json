@@ -1,0 +1,119 @@
+{
+  "fnr": "25105327167",
+  "fornavn": "John",
+  "etternavn": "Doe",
+  "foedselsdato": "1953-10-25",
+  "kjoenn": "m",
+  "erSakseier": "nei",
+  "sakseier": {
+    "id": "NO:NAVAT06",
+    "navn": "NAV ACC 06"
+  },
+  "navinstitusjon": {
+    "id": "NO:NAVAT07",
+    "navn": "NAV ACC 07"
+  },
+  "sakTittel": "Adhoc informasjonsutveksling",
+  "sakType": "H_BUC_01",
+  "sakId": "1450932",
+  "internasjonalSakId": "997d08886a15436b814b13f5bdb8d60d",
+  "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1450932",
+  "sistEndretDato": "2024-12-27",
+  "motparter": [
+    {
+      "formatertNavn": "NAV ACC 06 (Sverige)",
+      "motpartId": "NO:NAVAT06",
+      "motpartNavn": "NAV ACC 06",
+      "motpartLand": "SE",
+      "motpartLandkode": "SWE"
+    }
+  ],
+  "sakshandlinger": [
+    "Close_Case",
+    "X007",
+    "X009"
+  ],
+  "sedListe": [
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "c1c3760b0c334b14afd7618f61da500c",
+      "status": "received",
+      "sistEndretDato": "2024-12-28",
+      "svarsedType": "H002",
+      "svarsedId": "785acf94348a4797b5f1ada6e115d8cb",
+      "sedHandlinger": [
+        "H002",
+        "Read"
+      ]
+    },
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "ba8bd13128b4428f9426a1e683942a21",
+      "status": "received",
+      "sistEndretDato": "2024-12-27",
+      "svarsedType": "H002",
+      "svarsedId": "ec7df700d25646bc8fa2bb9958fc3a60",
+      "sedHandlinger": [
+        "H002",
+        "Read",
+        "ReadParticipants"
+      ]
+    },
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "1791b3d9f7f34cc1a5797a0c0415e169",
+      "status": "received",
+      "sistEndretDato": "2024-12-27",
+      "svarsedType": "H002",
+      "svarsedId": "64617c41e7ed44a5b514ae1652133f7a",
+      "sedHandlinger": [
+        "H002",
+        "Read"
+      ]
+    },
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "3c3d375f6c2c4e2b863aaf1c55f72718",
+      "status": "received",
+      "sistEndretDato": "2024-12-27",
+      "svarsedType": "H002",
+      "svarsedId": "7d10aa7f8dbb49b1a72551bebd69e879",
+      "sedHandlinger": [
+        "H002",
+        "Read"
+      ]
+    },
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "ce147d40e71c4f00804ccb28a7d8b341",
+      "status": "received",
+      "sistEndretDato": "2024-12-27",
+      "svarsedType": "H002",
+      "svarsedId": "e12197c1ed02404ba3efc775671661ba",
+      "sedHandlinger": [
+        "H002",
+        "Read"
+      ]
+    },
+    {
+      "sedTittel": "Melding/anmodning om informasjon",
+      "sedType": "H001",
+      "sedId": "b89e00b7f86f49409aae37a8a614a691",
+      "status": "received",
+      "sistEndretDato": "2024-12-27",
+      "svarsedType": "H002",
+      "svarsedId": "614c96c21e114208b08b51700b7a40e5",
+      "sedHandlinger": [
+        "H002",
+        "Read"
+      ]
+    }
+  ],
+  "sensitiv": false,
+  "cdmVersjon": "4.3"
+}

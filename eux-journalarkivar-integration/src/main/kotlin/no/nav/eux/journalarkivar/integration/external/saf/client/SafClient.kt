@@ -1,7 +1,9 @@
 package no.nav.eux.journalarkivar.integration.external.saf.client
 
 import no.nav.eux.journalarkivar.integration.config.post
-import no.nav.eux.journalarkivar.integration.external.saf.model.*
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafRoot
+import no.nav.eux.journalarkivar.integration.external.saf.model.SafTilknyttedeJournalposterData
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.retry.annotation.Backoff
@@ -16,43 +18,6 @@ class SafClient(
     val safUrl: String,
     val safRestTemplate: RestTemplate
 ) {
-
-    fun dokumentoversiktBrukerRoot(fnr: String): List<SafJournalpost> =
-        safRestTemplate
-            .post()
-            .uri("$safUrl/graphql")
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body(dokumentoversiktBrukerQuery(fnr))
-            .retrieve()
-            .body<SafRoot<SafDokumentoversiktBrukerData>>()
-            .safData()
-            .dokumentoversiktBruker
-            .journalposter
-
-    fun safSaker(fnr: String): List<SafSak> =
-        safRestTemplate
-            .post()
-            .uri("$safUrl/graphql")
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body(sakerQuery(fnr))
-            .retrieve()
-            .body<SafRoot<SafSakerData>>()
-            .safData()
-            .saker
-
-    fun safJournalpostOrNull(journalpostId: String): SafJournalpost? =
-        safRestTemplate
-            .post()
-            .uri("$safUrl/graphql")
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body(journalpostQuery(journalpostId))
-            .retrieve()
-            .body<SafRoot<SafJournalpostData>>()
-            .safData()
-            .journalpost
 
     @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
@@ -74,40 +39,6 @@ class SafClient(
             else -> data!!
         }
 }
-
-fun journalpostQuery(journalpostId: String) = GraphQlQuery(
-    """query {
-          journalpost(journalpostId: "$journalpostId") {
-              journalpostId
-              tittel
-              journalposttype
-              journalstatus
-              eksternReferanseId
-              tema
-              dokumenter {
-                dokumentInfoId
-                tittel
-                brevkode
-              }
-              tilleggsopplysninger {
-                nokkel
-                verdi
-              }
-              sak {
-                tema
-                fagsakId
-                fagsaksystem
-                arkivsaksnummer
-                arkivsaksystem
-                sakstype
-              }
-              bruker {
-                id
-                type
-              }
-          }
-        }""".trimIndent()
-)
 
 fun tilknyttedeJournalposterQuery(dokumentInfoId: String) = GraphQlQuery(
     """query {
@@ -139,60 +70,9 @@ fun tilknyttedeJournalposterQuery(dokumentInfoId: String) = GraphQlQuery(
                 id
                 type
               }
-          }
-        }""".trimIndent()
-)
-
-fun dokumentoversiktBrukerQuery(fnr: String) = GraphQlQuery(
-    """query {
-          dokumentoversiktBruker(
-            brukerId: { id: "$fnr", type:FNR },
-            journalstatuser: [],
-            journalposttyper: [],
-            foerste: 1000
-          ) {
-            journalposter {
-              journalpostId
-              tittel
-              journalposttype
-              journalstatus
-              eksternReferanseId
-              tema
-              dokumenter {
-                dokumentInfoId
-                tittel
-                brevkode
+              avsenderMottaker {
+                navn
               }
-              tilleggsopplysninger {
-                nokkel
-                verdi
-              }
-              sak {
-                tema
-                fagsakId
-                fagsaksystem
-                arkivsaksnummer
-                arkivsaksystem
-                sakstype
-              }
-              bruker {
-                id
-                type
-              }
-             }
-          }
-        }""".trimIndent()
-)
-
-fun sakerQuery(fnr: String) = GraphQlQuery(
-    """query {
-          saker(brukerId: { id: "$fnr", type:FNR } ) {
-            tema
-            fagsakId
-            fagsaksystem
-            arkivsaksnummer
-            arkivsaksystem
-            sakstype
           }
         }""".trimIndent()
 )
