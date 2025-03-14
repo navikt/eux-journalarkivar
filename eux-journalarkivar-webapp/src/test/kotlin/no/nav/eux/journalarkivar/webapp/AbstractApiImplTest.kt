@@ -1,5 +1,7 @@
 package no.nav.eux.journalarkivar.webapp
 
+import io.kotest.assertions.failure
+import io.kotest.assertions.json.shouldEqualSpecifiedJson
 import no.nav.eux.journalarkivar.Application
 import no.nav.eux.journalarkivar.webapp.common.httpEntity
 import no.nav.eux.journalarkivar.webapp.common.voidHttpEntity
@@ -39,4 +41,24 @@ abstract class AbstractApiImplTest {
         get() = httpEntity(mockOAuth2Server)
 
     fun httpEntity() = voidHttpEntity(mockOAuth2Server)
+
+    infix fun String.requestNumber(number: Int) =
+        with(requestBodies[this]) {
+            if (this == null)
+                null
+            else
+                this[number]
+        }
+
+    infix fun String?.shouldEqual(resource: String) {
+        if (this == null)
+            failure("Resource is null")
+        else
+            this shouldEqualSpecifiedJson resource.resource
+    }
+
+    private val String.resource
+        get() = object {}
+            .javaClass.getResource(this)!!.readText()
+
 }

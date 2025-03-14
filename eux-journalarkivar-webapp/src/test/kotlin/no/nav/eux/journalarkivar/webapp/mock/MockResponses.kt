@@ -52,6 +52,7 @@ fun mockResponseGet(request: RecordedRequest) =
 fun mockResponsePut(request: RecordedRequest) =
     when (request.uriEndsWith) {
         "/rest/journalpostapi/v1/journalpost/453802638" -> response200()
+        "/rest/journalpostapi/v1/journalpost/453802641" -> response200()
         "/api/v1/sed/journalstatuser" -> response200()
         else -> defaultResponse()
     }

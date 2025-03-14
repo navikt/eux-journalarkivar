@@ -4,6 +4,7 @@ import no.nav.eux.journalarkivar.integration.config.put
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostAvsenderMottakerOppdatering
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostAvsenderMottakerOppdatering.AvsenderMottaker
 import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivJournalpostOppdatering
+import no.nav.eux.journalarkivar.integration.external.dokarkiv.model.DokarkivOppdatering
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
@@ -22,14 +23,7 @@ class DokarkivClient(
         journalpostId: String,
         dokarkivJournalpostOppdatering: DokarkivJournalpostOppdatering
     ) {
-        dokarkivRestTemplate
-            .put()
-            .uri("$uri/$journalpostId")
-            .contentType(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .body(dokarkivJournalpostOppdatering)
-            .retrieve()
-            .toBodilessEntity()
+        oppdaterJournalpost(journalpostId, dokarkivJournalpostOppdatering)
     }
 
     fun oppdater(
@@ -39,12 +33,19 @@ class DokarkivClient(
         val body = DokarkivJournalpostAvsenderMottakerOppdatering(
             avsenderMottaker = AvsenderMottaker(avsenderMottakerNavn)
         )
+        oppdaterJournalpost(journalpostId, body)
+    }
+
+    private fun oppdaterJournalpost(
+        journalpostId: String,
+        dokarkivOppdatering: DokarkivOppdatering,
+    ) {
         dokarkivRestTemplate
             .put()
             .uri("$uri/$journalpostId")
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
-            .body(body)
+            .body(dokarkivOppdatering)
             .retrieve()
             .toBodilessEntity()
     }
