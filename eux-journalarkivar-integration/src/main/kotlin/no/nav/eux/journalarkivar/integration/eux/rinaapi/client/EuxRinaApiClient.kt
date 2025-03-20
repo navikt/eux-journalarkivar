@@ -20,7 +20,7 @@ class EuxRinaApiClient(
     fun euxRinaSakOversikt(rinaSakId: Int): EuxRinaSakOversiktV3 =
         euxRinaApiRestTemplate
             .get()
-            .uri("${euxRinaApiUrl}/v3/buc/$rinaSakId/oversikt")
+            .uri("${euxRinaApiUrl}/v3/buc/$rinaSakId/oversikt?domene=nav")
             .accept(APPLICATION_JSON)
             .retrieve()
             .body<EuxRinaSakOversiktV3>()
