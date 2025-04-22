@@ -37,11 +37,16 @@ class EuxOppgaveClient(
     }
 
     @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
-    fun behandleSed(journalpostId: String) {
+    fun behandleSed(journalpostId: String, personident: String) {
         euxOppgaveRestTemplate
             .post()
             .uri("${euxOppgaveUrl}/api/v1/oppgaver/behandleSedFraJournalpostId")
-            .body(BehandleSedFraJournalpostId(journalpostId))
+            .body(
+                BehandleSedFraJournalpostId(
+                    journalpostId = journalpostId,
+                    personident = personident
+                )
+            )
             .contentType(APPLICATION_JSON)
             .accept(MediaType.ALL)
             .retrieve()

@@ -117,7 +117,7 @@ class FerdigstillJournalposterService(
         when (journalposttype) {
             I -> {
                 ferdigstillTilknyttedeOppgaver(journalpostId, ferdigstiltJournalpost.bruker!!.id)
-                lagBehandleSedOppgave(journalpostId)
+                lagBehandleSedOppgave(journalpostId, ferdigstiltJournalpost.bruker!!.id)
             }
             else -> log.info { "Journalposttype $journalposttype, lager ikke behandle sed oppgave" }
         }
@@ -153,8 +153,8 @@ class FerdigstillJournalposterService(
         log.info { "Ferdigstilling av tilhørende oppgaver utført" }
     }
 
-    fun lagBehandleSedOppgave(journalpostId: String) {
-        euxOppgaveClient.behandleSed(journalpostId)
+    fun lagBehandleSedOppgave(journalpostId: String, personident: String) {
+        euxOppgaveClient.behandleSed(journalpostId, personident)
         log.info { "Behandle sed oppgave opprettet" }
     }
 
