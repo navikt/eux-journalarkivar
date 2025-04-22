@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.retry.annotation.Backoff
 import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.body
 
@@ -19,7 +20,11 @@ class EuxNavRinasakClient(
     val euxNavRinasakRestTemplate: RestTemplate
 ) {
 
-    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
+    @Retryable(
+        maxAttempts = 9,
+        backoff = Backoff(delay = 1000, multiplier = 2.0),
+        noRetryFor = [HttpClientErrorException::class]
+    )
     fun finn(rinasakId: Int) =
         euxNavRinasakRestTemplate
             .get()
@@ -27,7 +32,11 @@ class EuxNavRinasakClient(
             .retrieve()
             .body<EuxNavRinasak>()!!
 
-    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
+    @Retryable(
+        maxAttempts = 9,
+        backoff = Backoff(delay = 1000, multiplier = 2.0),
+        noRetryFor = [HttpClientErrorException::class]
+    )
     fun sedJournalstatuser(euxSedJournalstatus: EuxSedJournalstatus.Status = UKJENT) =
         euxNavRinasakRestTemplate
             .post()
@@ -37,7 +46,11 @@ class EuxNavRinasakClient(
             .body<SedJournalstatuserSearchResponseType>()!!
             .sedJournalstatuser
 
-    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
+    @Retryable(
+        maxAttempts = 9,
+        backoff = Backoff(delay = 1000, multiplier = 2.0),
+        noRetryFor = [HttpClientErrorException::class]
+    )
     fun put(journalstatusPut: EuxSedJournalstatusPut) {
         euxNavRinasakRestTemplate
             .put()
@@ -46,5 +59,4 @@ class EuxNavRinasakClient(
             .retrieve()
             .toBodilessEntity()
     }
-
 }
