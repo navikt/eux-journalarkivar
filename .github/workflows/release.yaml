@@ -103,19 +103,18 @@ jobs:
           VARS: .nais/q2.yaml
           PRINT_PAYLOAD: true
 
-# eksperimentell utrulling for endring av oppgaveflyt
-#  prod:
-#    name: 'Deploy to prod'
-#    if: "!contains(github.event.head_commit.message, '#q-test')"
-#    runs-on: ubuntu-latest
-#    needs: [ build, deploy-q1, deploy-q2 ]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: 'Calling nais deploy action for prod'
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          CLUSTER: prod-gcp
-#          RESOURCE: .nais/nais.yaml
-#          VAR: image=${{ needs.build.outputs.docker-image }}
-#          VARS: .nais/prod.yaml
-#          PRINT_PAYLOAD: true
+  prod:
+    name: 'Deploy to prod'
+    if: "!contains(github.event.head_commit.message, '#q-test')"
+    runs-on: ubuntu-latest
+    needs: [ build, deploy-q1, deploy-q2 ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Calling nais deploy action for prod'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais.yaml
+          VAR: image=${{ needs.build.outputs.docker-image }}
+          VARS: .nais/prod.yaml
+          PRINT_PAYLOAD: true
