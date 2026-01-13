@@ -3,7 +3,7 @@ package no.nav.eux.journalarkivar.webapp
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.web.client.exchange
+import org.springframework.boot.resttestclient.exchange
 import org.springframework.http.HttpMethod
 
 class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {

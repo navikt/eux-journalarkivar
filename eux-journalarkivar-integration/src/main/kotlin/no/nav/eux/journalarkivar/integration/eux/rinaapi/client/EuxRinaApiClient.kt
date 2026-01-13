@@ -4,14 +4,14 @@ import no.nav.eux.journalarkivar.integration.config.get
 import no.nav.eux.journalarkivar.integration.eux.rinaapi.model.EuxRinaSakOversiktV3
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.retry.annotation.Retryable
+import org.springframework.resilience.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.body
 
 @Component
 class EuxRinaApiClient(
-    @Value("\${endpoint.euxrinaapi}")
+    @param:Value("\${endpoint.euxrinaapi}")
     val euxRinaApiUrl: String,
     val euxRinaApiRestTemplate: RestTemplate
 ) {

@@ -5,20 +5,17 @@ import no.nav.security.token.support.client.core.ClientProperties
 import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
 import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.security.token.support.client.spring.oauth2.EnableOAuth2Client
-import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
-import org.springframework.retry.RetryCallback
-import org.springframework.retry.RetryContext
-import org.springframework.retry.RetryListener
-import org.springframework.retry.annotation.EnableRetry
+import org.springframework.resilience.annotation.EnableResilientMethods
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
 
-@EnableRetry
+@EnableResilientMethods
 @EnableOAuth2Client(cacheEnabled = true)
 @Configuration
 class IntegrationConfig {
@@ -60,18 +57,6 @@ class IntegrationConfig {
         oAuth2AccessTokenService = oAuth2AccessTokenService
     )
 
-    @Bean
-    fun retryListener() = object : RetryListener {
-        override fun <T, E : Throwable?> onError(
-            context: RetryContext,
-            callback: RetryCallback<T, E>,
-            throwable: Throwable
-        ) {
-            log.warn(throwable) {
-                "Eksternt kall feilet: ${context.getAttribute("context.name")}, forsøk nr: ${context.retryCount}"
-            }
-        }
-    }
 
     infix fun RestTemplateComponents.prefixBy(appName: String): RestTemplate {
         val clientProperties: ClientProperties = clientConfigurationProperties
