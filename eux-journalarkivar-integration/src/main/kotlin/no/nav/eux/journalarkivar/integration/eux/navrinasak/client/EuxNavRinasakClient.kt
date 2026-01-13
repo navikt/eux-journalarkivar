@@ -6,8 +6,7 @@ import no.nav.eux.journalarkivar.integration.config.put
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.*
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.UKJENT
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.retry.annotation.Backoff
-import org.springframework.retry.annotation.Retryable
+import org.springframework.resilience.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -15,15 +14,16 @@ import org.springframework.web.client.body
 
 @Component
 class EuxNavRinasakClient(
-    @Value("\${endpoint.euxnavrinasak}")
+    @param:Value("\${endpoint.euxnavrinasak}")
     val euxNavRinasakUrl: String,
     val euxNavRinasakRestTemplate: RestTemplate
 ) {
 
     @Retryable(
-        maxAttempts = 9,
-        backoff = Backoff(delay = 1000, multiplier = 2.0),
-        noRetryFor = [HttpClientErrorException::class]
+        maxRetries = 8,
+        delay = 1000,
+        multiplier = 2.0,
+        excludes = [HttpClientErrorException::class]
     )
     fun finn(rinasakId: Int) =
         euxNavRinasakRestTemplate
@@ -33,9 +33,10 @@ class EuxNavRinasakClient(
             .body<EuxNavRinasak>()!!
 
     @Retryable(
-        maxAttempts = 9,
-        backoff = Backoff(delay = 1000, multiplier = 2.0),
-        noRetryFor = [HttpClientErrorException::class]
+        maxRetries = 8,
+        delay = 1000,
+        multiplier = 2.0,
+        excludes = [HttpClientErrorException::class]
     )
     fun sedJournalstatuser(euxSedJournalstatus: EuxSedJournalstatus.Status = UKJENT) =
         euxNavRinasakRestTemplate
@@ -47,9 +48,10 @@ class EuxNavRinasakClient(
             .sedJournalstatuser
 
     @Retryable(
-        maxAttempts = 9,
-        backoff = Backoff(delay = 1000, multiplier = 2.0),
-        noRetryFor = [HttpClientErrorException::class]
+        maxRetries = 8,
+        delay = 1000,
+        multiplier = 2.0,
+        excludes = [HttpClientErrorException::class]
     )
     fun put(journalstatusPut: EuxSedJournalstatusPut) {
         euxNavRinasakRestTemplate

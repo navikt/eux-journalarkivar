@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate
 
 @Component
 class DokarkivClient(
-    @Value("\${endpoint.dokarkiv}")
+    @param:Value("\${endpoint.dokarkiv}")
     val dokarkivUrl: String,
     val dokarkivRestTemplate: RestTemplate
 ) {

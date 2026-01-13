@@ -2,6 +2,10 @@ spring:
   main:
     banner-mode: "off"
 
+  http:
+    converters:
+      preferred-json-mapper: jackson2
+
 logging:
   structured:
     format:

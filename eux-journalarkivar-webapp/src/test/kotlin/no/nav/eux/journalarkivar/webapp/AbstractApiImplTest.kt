@@ -1,6 +1,5 @@
 package no.nav.eux.journalarkivar.webapp
 
-import io.kotest.assertions.failure
 import io.kotest.assertions.json.shouldEqualSpecifiedJson
 import no.nav.eux.journalarkivar.Application
 import no.nav.eux.journalarkivar.webapp.common.httpEntity
@@ -10,8 +9,9 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.resttestclient.TestRestTemplate
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.test.context.ActiveProfiles
 
@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles
 )
 @ActiveProfiles("test")
 @EnableMockOAuth2Server
+@AutoConfigureTestRestTemplate
 abstract class AbstractApiImplTest {
 
     @Autowired
@@ -37,7 +38,7 @@ abstract class AbstractApiImplTest {
 
     }
 
-    val <T> T.httpEntity: HttpEntity<T>
+    val <T : Any> T.httpEntity: HttpEntity<T>
         get() = httpEntity(mockOAuth2Server)
 
     fun httpEntity() = voidHttpEntity(mockOAuth2Server)
@@ -52,7 +53,7 @@ abstract class AbstractApiImplTest {
 
     infix fun String?.shouldEqual(resource: String) {
         if (this == null)
-            failure("Resource is null")
+            error("Resource is null")
         else
             this shouldEqualSpecifiedJson resource.resource
     }

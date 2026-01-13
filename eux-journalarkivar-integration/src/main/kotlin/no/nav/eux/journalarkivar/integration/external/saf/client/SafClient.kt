@@ -6,20 +6,19 @@ import no.nav.eux.journalarkivar.integration.external.saf.model.SafRoot
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafTilknyttedeJournalposterData
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.retry.annotation.Backoff
-import org.springframework.retry.annotation.Retryable
+import org.springframework.resilience.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.body
 
 @Component
 class SafClient(
-    @Value("\${endpoint.saf}")
+    @param:Value("\${endpoint.saf}")
     val safUrl: String,
     val safRestTemplate: RestTemplate
 ) {
 
-    @Retryable(maxAttempts = 9, backoff = Backoff(delay = 1000, multiplier = 2.0))
+    @Retryable(maxRetries = 8, delay = 1000, multiplier = 2.0)
     fun firstTilknyttetJournalpostOrNull(dokumentInfoId: String): SafJournalpost? =
         safRestTemplate
             .post()
@@ -36,7 +35,7 @@ class SafClient(
     fun <T> SafRoot<T>?.safData(): T =
         when (this!!.data) {
             null -> throw RuntimeException("Feil fra SAF: ${errors?.joinToString { "${it.message}" }}")
-            else -> data!!
+            else -> data
         }
 }
 
