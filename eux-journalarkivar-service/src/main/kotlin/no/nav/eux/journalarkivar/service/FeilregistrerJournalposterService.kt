@@ -63,7 +63,15 @@ class FeilregistrerJournalposterService(
     fun EuxSedJournalstatus.dokumentForFeilregistrering(): DokumentForFeilregistrering? =
         try {
             val dokument = dokument()
+            mdc(
+                rinasakId = rinasakId,
+                sedId = sedId,
+                sedVersjon = sedVersjon,
+                sedType = dokument.sedType,
+                dokumentInfoId = dokument.dokumentInfoId,
+            )
             val journalpost = journalpost(dokument.dokumentInfoId)
+            mdc(journalpostId = journalpost.journalpostId)
             DokumentForFeilregistrering(this, journalpost, dokument)
         } catch (e: RuntimeException) {
             null
