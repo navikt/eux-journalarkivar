@@ -14,7 +14,9 @@ data class EuxSedJournalstatus(
     val opprettetTidspunkt: OffsetDateTime
 ) {
     enum class Status {
-        JOURNALFOERT, UKJENT, FEILREGISTRERT, KORRUPT
+        JOURNALFOERT, UKJENT, FEILREGISTRERT, KORRUPT,
+        FEILET_FERDIGSTILL,
+        FEILET_FEILREGISTRER
     }
 
     val put

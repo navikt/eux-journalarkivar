@@ -35,7 +35,7 @@ abstract class AbstractApiImplTest {
 
     @BeforeEach
     fun initialiseRestAssuredMockMvcWebApplicationContext() {
-
+        requestBodies.clear()
     }
 
     val <T : Any> T.httpEntity: HttpEntity<T>

@@ -39,6 +39,11 @@ class FerdigstillJournalposterService(
 
     fun ferdigstillJournalposter() {
         euxNavRinasakClient
+            .sedJournalstatuser(FEILET_FERDIGSTILL)
+            .also { log.info { "${it.size} dokumenter med feilet ferdigstill, forsøker på nytt" } }
+            .forEach { it.tryFerdigstillJournalpost() }
+        clearLocalMdc()
+        euxNavRinasakClient
             .sedJournalstatuser(UKJENT)
             .also { log.info { "${it.size} dokumenter har status ukjent" } }
             .forEach { it.tryFerdigstillJournalpost() }
@@ -58,7 +63,16 @@ class FerdigstillJournalposterService(
         } catch (e: SakUtenFerdigstilteJournalposterException) {
             log.debug { e.message }
         } catch (e: Exception) {
-            log.error(e) { "Feil ved ferdigstilling av journalpost: ${e.message}" }
+            when (sedJournalstatus) {
+                FEILET_FERDIGSTILL -> {
+                    log.error { "Ferdigstilling feilet for andre gang, gir opp: ${e.message}" }
+                    settStatusTil(KORRUPT, feilmelding = e.message)
+                }
+                else -> {
+                    log.warn { "Ferdigstilling feilet, forsøker igjen neste kjøring: ${e.message}" }
+                    settStatusTil(FEILET_FERDIGSTILL, feilmelding = e.message)
+                }
+            }
         }
 
     fun EuxSedJournalstatus.ferdigstillJournalpost() {
@@ -69,7 +83,7 @@ class FerdigstillJournalposterService(
             ?: throw RuntimeException("Fant ikke dokument i nav rinasak")
         mdc(sedType = dokument.sedType, dokumentInfoId = dokument.dokumentInfoId)
         ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
-        this settStatusTil JOURNALFOERT
+        this.settStatusTil(JOURNALFOERT)
     }
 
     fun EuxSedJournalstatus.ferdigstillJournalpost(
@@ -88,8 +102,13 @@ class FerdigstillJournalposterService(
         }
     }
 
-    infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
-        euxNavRinasakClient.put(copy(sedJournalstatus = journalstatus).put)
+    fun EuxSedJournalstatus.settStatusTil(
+        journalstatus: EuxSedJournalstatus.Status,
+        feilmelding: String? = null
+    ) {
+        euxNavRinasakClient.put(
+            copy(sedJournalstatus = journalstatus).put.copy(feilmelding = feilmelding)
+        )
         log.info { "Sed journalstatus satt til $journalstatus" }
     }
 

@@ -8,4 +8,5 @@ data class EuxSedJournalstatusPut(
     val sedId: UUID,
     val sedVersjon: Int,
     val sedJournalstatus: Status,
+    val feilmelding: String? = null,
 )
