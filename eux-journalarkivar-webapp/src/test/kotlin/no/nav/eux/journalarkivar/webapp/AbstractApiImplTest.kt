@@ -2,18 +2,15 @@ package no.nav.eux.journalarkivar.webapp
 
 import io.kotest.assertions.json.shouldEqualSpecifiedJson
 import no.nav.eux.journalarkivar.Application
-import no.nav.eux.journalarkivar.webapp.common.httpEntity
-import no.nav.eux.journalarkivar.webapp.common.voidHttpEntity
 import no.nav.eux.journalarkivar.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.resttestclient.TestRestTemplate
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.HttpEntity
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.servlet.client.RestTestClient
 
 @SpringBootTest(
     classes = [Application::class],
@@ -21,14 +18,14 @@ import org.springframework.test.context.ActiveProfiles
 )
 @ActiveProfiles("test")
 @EnableMockOAuth2Server
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 abstract class AbstractApiImplTest {
 
     @Autowired
     lateinit var mockOAuth2Server: MockOAuth2Server
 
     @Autowired
-    lateinit var restTemplate: TestRestTemplate
+    lateinit var restTestClient: RestTestClient
 
     @Autowired
     lateinit var requestBodies: RequestBodies
@@ -37,11 +34,6 @@ abstract class AbstractApiImplTest {
     fun initialiseRestAssuredMockMvcWebApplicationContext() {
         requestBodies.clear()
     }
-
-    val <T : Any> T.httpEntity: HttpEntity<T>
-        get() = httpEntity(mockOAuth2Server)
-
-    fun httpEntity() = voidHttpEntity(mockOAuth2Server)
 
     infix fun String.requestNumber(number: Int) =
         with(requestBodies[this]) {
