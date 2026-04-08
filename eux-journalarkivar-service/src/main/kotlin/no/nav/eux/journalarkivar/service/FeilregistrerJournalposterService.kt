@@ -5,10 +5,11 @@ import no.nav.eux.journalarkivar.integration.eux.journal.client.EuxJournalClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.client.EuxNavRinasakClient
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.Dokument
 import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus
-import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.FEILREGISTRERT
+import no.nav.eux.journalarkivar.integration.eux.navrinasak.model.EuxSedJournalstatus.Status.*
 import no.nav.eux.journalarkivar.integration.external.saf.client.SafClient
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalpost
 import no.nav.eux.journalarkivar.integration.external.saf.model.SafJournalposttype.U
+import no.nav.eux.logging.clearLocalMdc
 import no.nav.eux.logging.mdc
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime.now
@@ -24,43 +25,20 @@ class FeilregistrerJournalposterService(
 
     fun feilregistrerJournalposter() {
         euxNavRinasakClient
-            .sedJournalstatuser()
+            .sedJournalstatuser(FEILET_FEILREGISTRER)
+            .also { log.info { "${it.size} dokumenter med feilet feilregistrering, forsøker på nytt" } }
+            .forEach { it.tryFeilregistrerJournalpost() }
+        clearLocalMdc()
+        euxNavRinasakClient
+            .sedJournalstatuser(UKJENT)
             .also { log.info { "${it.size} kandidater for feilregistrering" } }
             .filter { it.opprettetTidspunkt.isBefore(now().minusDays(30)) }
             .also { log.info { "${it.size} er mer enn 30 dager gamle" } }
-            .mapNotNull { it.dokumentForFeilregistrering() }
-            .also { log.info { "${it.size} har tilknyttet journalpost" } }
-            .filter { it.journalpost.bruker == null }
-            .also { log.info { "${it.size} har ikke tilknyttet bruker" } }
-            .filter { it.journalpost.journalposttype == U }
-            .also { log.info { "${it.size} er utgående og blir forsøkt feilregistrert" } }
-            .forEach { it.feilregistrer() }
+            .forEach { it.tryFeilregistrerJournalpost() }
+        clearLocalMdc()
     }
 
-    fun DokumentForFeilregistrering.feilregistrer() {
-        mdc(
-            rinasakId = euxSedJournalstatus.rinasakId,
-            sedId = euxSedJournalstatus.sedId,
-            sedVersjon = euxSedJournalstatus.sedVersjon,
-            sedType = dokument.sedType,
-            dokumentInfoId = dokument.dokumentInfoId,
-            journalpostId = journalpost.journalpostId
-        )
-        try {
-            euxJournalClient settStatusAvbrytFor journalpost.journalpostId
-            log.info { "Journalpost feilregistrert" }
-            euxSedJournalstatus settStatusTil FEILREGISTRERT
-        } catch (e: RuntimeException) {
-            log.error(e) { "Feilregistrering feilet" }
-        }
-    }
-
-    infix fun EuxSedJournalstatus.settStatusTil(journalstatus: EuxSedJournalstatus.Status) {
-        euxNavRinasakClient.put(copy(sedJournalstatus = journalstatus).put)
-        log.info { "Journalstatus satt til $journalstatus" }
-    }
-
-    fun EuxSedJournalstatus.dokumentForFeilregistrering(): DokumentForFeilregistrering? =
+    fun EuxSedJournalstatus.tryFeilregistrerJournalpost() {
         try {
             val dokument = dokument()
             mdc(
@@ -72,10 +50,49 @@ class FeilregistrerJournalposterService(
             )
             val journalpost = journalpost(dokument.dokumentInfoId)
             mdc(journalpostId = journalpost.journalpostId)
-            DokumentForFeilregistrering(this, journalpost, dokument)
-        } catch (e: RuntimeException) {
-            null
+            if (journalpost.bruker == null && journalpost.journalposttype == U) {
+                feilregistrer(dokument, journalpost)
+            }
+        } catch (e: Exception) {
+            when (sedJournalstatus) {
+                FEILET_FEILREGISTRER -> {
+                    log.error { "Feilregistrering feilet for andre gang, gir opp: ${e.message}" }
+                    settStatusTil(KORRUPT, feilmelding = e.message)
+                }
+                else -> {
+                    log.warn { "Feilregistrering feilet, forsøker igjen neste kjøring: ${e.message}" }
+                    settStatusTil(FEILET_FEILREGISTRER, feilmelding = e.message)
+                }
+            }
         }
+    }
+
+    fun EuxSedJournalstatus.feilregistrer(
+        dokument: Dokument,
+        journalpost: SafJournalpost
+    ) {
+        mdc(
+            rinasakId = rinasakId,
+            sedId = sedId,
+            sedVersjon = sedVersjon,
+            sedType = dokument.sedType,
+            dokumentInfoId = dokument.dokumentInfoId,
+            journalpostId = journalpost.journalpostId
+        )
+        euxJournalClient settStatusAvbrytFor journalpost.journalpostId
+        log.info { "Journalpost feilregistrert" }
+        settStatusTil(FEILREGISTRERT)
+    }
+
+    fun EuxSedJournalstatus.settStatusTil(
+        journalstatus: EuxSedJournalstatus.Status,
+        feilmelding: String? = null
+    ) {
+        euxNavRinasakClient.put(
+            copy(sedJournalstatus = journalstatus).put.copy(feilmelding = feilmelding)
+        )
+        log.info { "Journalstatus satt til $journalstatus" }
+    }
 
     fun EuxSedJournalstatus.dokument() =
         try {
