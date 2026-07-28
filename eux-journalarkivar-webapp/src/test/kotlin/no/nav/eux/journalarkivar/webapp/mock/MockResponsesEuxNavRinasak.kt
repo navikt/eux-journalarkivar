@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.mockwebserver.MockResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import java.time.OffsetDateTime.now
 
 fun getEuxNavRinasakResponse(rinasakId: Int) =
     MockResponse().apply {
@@ -12,22 +13,12 @@ fun getEuxNavRinasakResponse(rinasakId: Int) =
         setBody(getNavRinasakResponseJson(rinasakId))
     }
 
-fun postSedJournalstatuserFinnResponse(body: String): MockResponse {
-    val status = ObjectMapper()
-        .readTree(body)
-        .findValue("sedJournalstatus")
-        ?.asText()
-    val responseBody = when (status) {
-        "FEILET_FERDIGSTILL" -> sedJournalstatuserFinnResponseBody("FEILET_FERDIGSTILL")
-        "FEILET_FEILREGISTRER" -> sedJournalstatuserFinnResponseBody("FEILET_FEILREGISTRER")
-        else -> postSedJournalstatuserFinnResponseBody
-    }
-    return MockResponse().apply {
+fun postSedJournalstatuserFinnResponse(body: String) =
+    MockResponse().apply {
         setResponseCode(200)
         setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        setBody(responseBody)
+        setBody(sedJournalstatuserFinnResponseBody(body.sedJournalstatus))
     }
-}
 
 fun getNavRinasakResponseJson(rinasakId: Int) =
     Any::class::class.java
@@ -38,8 +29,13 @@ fun sedJournalstatuserFinnResponseBody(status: String) =
     Any::class::class.java
         .getResource("/dataset/eux-nav-rinasak/post-sed-journalstatuser-finn-response-body-$status.json")!!
         .readText()
+        .replace(nyligOpprettetTidspunktPlaceholder, now().toString())
 
-val postSedJournalstatuserFinnResponseBody =
-    Any::class::class.java
-        .getResource("/dataset/eux-nav-rinasak/post-sed-journalstatuser-finn-response-body.json")!!
-        .readText()
+const val nyligOpprettetTidspunktPlaceholder = "NYLIG_OPPRETTET_TIDSPUNKT"
+
+val String.sedJournalstatus: String
+    get() = ObjectMapper()
+        .readTree(this)
+        .findValue("sedJournalstatus")
+        ?.asText()
+        ?: throw RuntimeException("Fant ikke sedJournalstatus i søkekriterier: $this")

@@ -20,8 +20,6 @@ fun mockResponsePost(request: RecordedRequest, body: String) =
         "/oauth2/v2.0/token" -> tokenResponse()
         "/api/v1/sed/journalstatuser/finn" -> postSedJournalstatuserFinnResponse(body)
         "/graphql" -> safResponse(body)
-        "/api/v1/oppgaver" -> oppgaverResponse()
-        "/api/v1/oppgaver/tildelEnhetsnr" -> tildelEnhetsnrResponse(body)
         "/api/v1/journalposter/settStatusAvbryt" -> response200()
         "/api/v1/oppgaver/ferdigstill" -> response200()
         "/api/v1/oppgaver/behandleSedFraJournalpostId" -> response200()
@@ -30,10 +28,8 @@ fun mockResponsePost(request: RecordedRequest, body: String) =
 
 fun mockResponsePatch(request: RecordedRequest) =
     when (request.uriEndsWith) {
-        "/journalpost/453802638/feilregistrer/settStatusAvbryt" -> response200()
-        "/journalpost/453802638/ferdigstill" -> response200()
         "/api/v1/journalposter/453802638/ferdigstill" -> response200()
-        "/api/v1/oppgaver/190402" -> oppgaverResponse()
+        "/api/v1/journalposter/453802642/ferdigstill" -> response200()
         else -> defaultResponse()
     }
 
@@ -42,11 +38,11 @@ fun mockResponseGet(request: RecordedRequest) =
         "/api/v1/rinasaker/1444520" -> getEuxNavRinasakResponse(1444520)
         "/api/v1/rinasaker/1444521" -> getEuxNavRinasakResponse(1444521)
         "/api/v1/rinasaker/1444522" -> getEuxNavRinasakResponse(1444522)
+        "/api/v1/rinasaker/1444523" -> getEuxNavRinasakResponse(1444523)
+        "/api/v1/rinasaker/1444524" -> getEuxNavRinasakResponse(1444524)
         "/api/v1/rinasaker/9999999" -> response404()
         "/v3/buc/1444520/oversikt?domene=nav" -> getRinaApiResponse()
-        "/v3/buc/1444521/oversikt?domene=nav" -> getRinaApiResponse()
         "/v3/buc/1444522/oversikt?domene=nav" -> getRinaApiResponse()
-        getOppgaverUri -> getOppgaverResponse()
         else -> defaultResponse()
     }
 
@@ -54,6 +50,7 @@ fun mockResponsePut(request: RecordedRequest) =
     when (request.uriEndsWith) {
         "/rest/journalpostapi/v1/journalpost/453802638" -> response200()
         "/rest/journalpostapi/v1/journalpost/453802641" -> response200()
+        "/rest/journalpostapi/v1/journalpost/453802642" -> response200()
         "/api/v1/sed/journalstatuser" -> response200()
         else -> defaultResponse()
     }

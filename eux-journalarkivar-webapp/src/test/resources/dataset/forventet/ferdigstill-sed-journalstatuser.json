@@ -1,0 +1,42 @@
+[
+  {
+    "rinasakId": 9999999,
+    "sedId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee01",
+    "sedVersjon": 1,
+    "sedJournalstatus": "KORRUPT"
+  },
+  {
+    "rinasakId": 1444520,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "sedVersjon": 2,
+    "sedJournalstatus": "JOURNALFOERT",
+    "feilmelding": null
+  },
+  {
+    "rinasakId": 1444521,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "sedVersjon": 2,
+    "sedJournalstatus": "JOURNALFOERT",
+    "feilmelding": null
+  },
+  {
+    "rinasakId": 1444523,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa9",
+    "sedVersjon": 2,
+    "sedJournalstatus": "JOURNALFOERT",
+    "feilmelding": null
+  },
+  {
+    "rinasakId": 9999999,
+    "sedId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee03",
+    "sedVersjon": 1,
+    "sedJournalstatus": "FEILET_FERDIGSTILL"
+  },
+  {
+    "rinasakId": 1444524,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afaa",
+    "sedVersjon": 2,
+    "sedJournalstatus": "JOURNALFOERT",
+    "feilmelding": null
+  }
+]

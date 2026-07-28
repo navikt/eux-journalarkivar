@@ -1,0 +1,30 @@
+{
+  "data": {
+    "tilknyttedeJournalposter": [
+      {
+        "journalpostId": "453802642",
+        "tittel": "H002 Svar på anmodning om informasjon",
+        "journalstatus": "MOTTATT",
+        "journalposttype": "U",
+        "eksternReferanseId": "1444523_aa7d09fc470c4b86af9d315d12f5a3ac_1",
+        "tema": "PEN",
+        "dokumenter": [
+          {
+            "dokumentInfoId": "454221910",
+            "tittel": "1",
+            "brevkode": "1"
+          }
+        ],
+        "tilleggsopplysninger": [
+          {
+            "nokkel": "rinaSakId",
+            "verdi": "1444523"
+          }
+        ],
+        "avsenderMottaker": {
+          "navn": "NAV ACC 09"
+        }
+      }
+    ]
+  }
+}

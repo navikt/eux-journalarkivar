@@ -1,0 +1,27 @@
+{
+  "data": {
+    "tilknyttedeJournalposter": [
+      {
+        "journalpostId": "453802644",
+        "tittel": "H001 Melding/anmodning om informasjon",
+        "journalstatus": "FEILREGISTRERT",
+        "journalposttype": "I",
+        "eksternReferanseId": "1444524_aa7d09fc470c4b86af9d315d12f5a3ae_1",
+        "tema": "KON",
+        "dokumenter": [
+          {
+            "dokumentInfoId": "454221912",
+            "tittel": "1",
+            "brevkode": "1"
+          }
+        ],
+        "tilleggsopplysninger": [
+          {
+            "nokkel": "rinaSakId",
+            "verdi": "1444524"
+          }
+        ]
+      }
+    ]
+  }
+}

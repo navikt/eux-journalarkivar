@@ -1,0 +1,21 @@
+[
+  {
+    "rinasakId": 9999999,
+    "sedId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee02",
+    "sedVersjon": 1,
+    "sedJournalstatus": "KORRUPT"
+  },
+  {
+    "rinasakId": 1444522,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+    "sedVersjon": 2,
+    "sedJournalstatus": "FEILREGISTRERT",
+    "feilmelding": null
+  },
+  {
+    "rinasakId": 9999999,
+    "sedId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee03",
+    "sedVersjon": 1,
+    "sedJournalstatus": "FEILET_FEILREGISTRER"
+  }
+]

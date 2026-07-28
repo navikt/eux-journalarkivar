@@ -31,17 +31,14 @@ abstract class AbstractApiImplTest {
     lateinit var requestBodies: RequestBodies
 
     @BeforeEach
-    fun initialiseRestAssuredMockMvcWebApplicationContext() {
+    fun resetTestState() {
         requestBodies.clear()
     }
 
-    infix fun String.requestNumber(number: Int) =
-        with(requestBodies[this]) {
-            if (this == null)
-                null
-            else
-                this[number]
-        }
+    val String.requests: List<String>
+        get() = requestBodies[this] ?: emptyList()
+
+    infix fun String.requestNumber(number: Int) = requests.getOrNull(number)
 
     infix fun String?.shouldEqual(resource: String) {
         if (this == null)
@@ -49,6 +46,9 @@ abstract class AbstractApiImplTest {
         else
             this shouldEqualSpecifiedJson resource.resource
     }
+
+    infix fun List<String>.shouldEqual(resource: String) =
+        joinToString(prefix = "[", postfix = "]") shouldEqualSpecifiedJson resource.resource
 
     private val String.resource
         get() = object {}
