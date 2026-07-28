@@ -2,8 +2,12 @@ package no.nav.eux.journalarkivar.webapp
 
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import no.nav.eux.journalarkivar.webapp.common.arkivarprosessUrl
 import no.nav.eux.journalarkivar.webapp.common.token
+import no.nav.eux.journalarkivar.webapp.mock.dokumentInfoId
+import no.nav.eux.journalarkivar.webapp.mock.rinasakId
+import no.nav.eux.journalarkivar.webapp.mock.sedJournalstatus
 import org.junit.jupiter.api.Test
 
 class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
@@ -43,11 +47,32 @@ class FerdigstillJournalposterApiImplTest : AbstractApiImplTest() {
     }
 
     @Test
-    fun `POST arkivarprosess ferdigstill - journalpost er feilregistrert i arkivet - 204`() {
+    fun `POST arkivarprosess ferdigstill - feilregistrert sed forblir feilregistrert - 204`() {
         ferdigstillJournalposter()
 
         "/rest/journalpostapi/v1/journalpost/453802644".requests.shouldBeEmpty()
         "/api/v1/journalposter/453802644/ferdigstill".requests.shouldBeEmpty()
+        "/api/v1/sed/journalstatuser".requests
+            .single { it.rinasakId == 1444524 }
+            .sedJournalstatus shouldBe "FEILREGISTRERT"
+    }
+
+    @Test
+    fun `POST arkivarprosess ferdigstill - ukjent sed med feilregistrert journalpost synkroniseres - 204`() {
+        ferdigstillJournalposter()
+
+        "/rest/journalpostapi/v1/journalpost/453802645".requests.shouldBeEmpty()
+        "/api/v1/journalposter/453802645/ferdigstill".requests.shouldBeEmpty()
+        "/api/v1/sed/journalstatuser".requests.single { it.rinasakId == 1444525 } shouldEqual
+                "/dataset/forventet/ferdigstill-feilregistrert.json"
+    }
+
+    @Test
+    fun `POST arkivarprosess ferdigstill - saf spørring inneholder nødvendige felter - 204`() {
+        ferdigstillJournalposter()
+
+        "/graphql".requests.first { it.dokumentInfoId == "454221906" } shouldEqualGraphQlQuery
+                "/dataset/forventet/saf-tilknyttede-journalposter-query.json"
     }
 
     @Test

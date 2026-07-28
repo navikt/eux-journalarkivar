@@ -1,6 +1,8 @@
 package no.nav.eux.journalarkivar.webapp
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.assertions.json.shouldEqualSpecifiedJson
+import io.kotest.matchers.shouldBe
 import no.nav.eux.journalarkivar.Application
 import no.nav.eux.journalarkivar.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -20,6 +22,8 @@ import org.springframework.test.web.servlet.client.RestTestClient
 @EnableMockOAuth2Server
 @AutoConfigureRestTestClient
 abstract class AbstractApiImplTest {
+
+    private val objectMapper = ObjectMapper()
 
     @Autowired
     lateinit var mockOAuth2Server: MockOAuth2Server
@@ -49,6 +53,23 @@ abstract class AbstractApiImplTest {
 
     infix fun List<String>.shouldEqual(resource: String) =
         joinToString(prefix = "[", postfix = "]") shouldEqualSpecifiedJson resource.resource
+
+    infix fun String?.shouldEqualGraphQlQuery(resource: String) {
+        if (this == null)
+            error("GraphQL request is null")
+        else
+            graphQlQuery.normalizedWhitespace shouldBe resource.resource.graphQlQuery.normalizedWhitespace
+    }
+
+    private val String.graphQlQuery
+        get() = objectMapper
+            .readTree(this)
+            .findValue("query")
+            ?.asText()
+            ?: error("Fant ikke GraphQL query: $this")
+
+    private val String.normalizedWhitespace
+        get() = trim().replace(Regex("\\s+"), " ")
 
     private val String.resource
         get() = object {}

@@ -33,9 +33,18 @@ fun sedJournalstatuserFinnResponseBody(status: String) =
 
 const val nyligOpprettetTidspunktPlaceholder = "NYLIG_OPPRETTET_TIDSPUNKT"
 
+private val objectMapper = ObjectMapper()
+
 val String.sedJournalstatus: String
-    get() = ObjectMapper()
+    get() = objectMapper
         .readTree(this)
         .findValue("sedJournalstatus")
         ?.asText()
         ?: throw RuntimeException("Fant ikke sedJournalstatus i søkekriterier: $this")
+
+val String.rinasakId: Int
+    get() = objectMapper
+        .readTree(this)
+        .findValue("rinasakId")
+        ?.asInt()
+        ?: throw RuntimeException("Fant ikke rinasakId: $this")

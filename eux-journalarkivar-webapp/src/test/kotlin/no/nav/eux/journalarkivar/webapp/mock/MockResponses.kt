@@ -40,6 +40,7 @@ fun mockResponseGet(request: RecordedRequest) =
         "/api/v1/rinasaker/1444522" -> getEuxNavRinasakResponse(1444522)
         "/api/v1/rinasaker/1444523" -> getEuxNavRinasakResponse(1444523)
         "/api/v1/rinasaker/1444524" -> getEuxNavRinasakResponse(1444524)
+        "/api/v1/rinasaker/1444525" -> getEuxNavRinasakResponse(1444525)
         "/api/v1/rinasaker/9999999" -> response404()
         "/v3/buc/1444520/oversikt?domene=nav" -> getRinaApiResponse()
         "/v3/buc/1444522/oversikt?domene=nav" -> getRinaApiResponse()

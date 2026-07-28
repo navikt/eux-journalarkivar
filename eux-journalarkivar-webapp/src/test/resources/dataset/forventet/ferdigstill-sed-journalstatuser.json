@@ -33,10 +33,17 @@
     "sedJournalstatus": "FEILET_FERDIGSTILL"
   },
   {
+    "rinasakId": 1444525,
+    "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afab",
+    "sedVersjon": 2,
+    "sedJournalstatus": "FEILREGISTRERT",
+    "feilmelding": null
+  },
+  {
     "rinasakId": 1444524,
     "sedId": "3fa85f64-5717-4562-b3fc-2c963f66afaa",
     "sedVersjon": 2,
-    "sedJournalstatus": "JOURNALFOERT",
+    "sedJournalstatus": "FEILREGISTRERT",
     "feilmelding": null
   }
 ]
