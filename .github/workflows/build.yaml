@@ -2,10 +2,8 @@ name: build
 run-name: Build - ${{ github.event.head_commit.message }}
 
 permissions:
-  deployments: write
-  packages: write
-  contents: write
-  id-token: write
+  contents: read
+  packages: read
 
 on:
   push:
