@@ -1,26 +1,27 @@
 package no.nav.eux.journalarkivar.webapp.mock
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.mockwebserver.MockResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 
 fun safResponse(body: String) =
-    when {
-        body.contains("454221906") -> document("454221906")
-        body.contains("454221907") -> document("454221907")
-        body.contains("454221908") -> document("454221908")
-        body.contains("454221909") -> document("454221909")
-        else -> throw RuntimeException("No SAF response defined for $body}")
-    }
-
-fun document(dokumentInfoId: String) =
     MockResponse().apply {
         setResponseCode(200)
         setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        setBody(safResponseBody(dokumentInfoId))
+        setBody(safResponseBody(body.dokumentInfoId))
     }
 
 fun safResponseBody(dokumentInfoId: String) =
     Any::class::class.java
         .getResource("/dataset/saf/get-response-body-$dokumentInfoId.json")!!
         .readText()
+
+private val dokumentInfoIdRegex = Regex("""dokumentInfoId: "(\d+)"""")
+
+val String.dokumentInfoId: String
+    get() = dokumentInfoIdRegex
+        .find(ObjectMapper().readTree(this).findValue("query").asText())
+        ?.groupValues
+        ?.get(1)
+        ?: throw RuntimeException("Fant ikke dokumentInfoId i saf spørring: $this")

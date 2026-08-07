@@ -1,6 +1,8 @@
 package no.nav.eux.journalarkivar.webapp
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.assertions.json.shouldEqualSpecifiedJson
+import io.kotest.matchers.shouldBe
 import no.nav.eux.journalarkivar.Application
 import no.nav.eux.journalarkivar.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -21,6 +23,8 @@ import org.springframework.test.web.servlet.client.RestTestClient
 @AutoConfigureRestTestClient
 abstract class AbstractApiImplTest {
 
+    private val objectMapper = ObjectMapper()
+
     @Autowired
     lateinit var mockOAuth2Server: MockOAuth2Server
 
@@ -31,17 +35,14 @@ abstract class AbstractApiImplTest {
     lateinit var requestBodies: RequestBodies
 
     @BeforeEach
-    fun initialiseRestAssuredMockMvcWebApplicationContext() {
+    fun resetTestState() {
         requestBodies.clear()
     }
 
-    infix fun String.requestNumber(number: Int) =
-        with(requestBodies[this]) {
-            if (this == null)
-                null
-            else
-                this[number]
-        }
+    val String.requests: List<String>
+        get() = requestBodies[this] ?: emptyList()
+
+    infix fun String.requestNumber(number: Int) = requests.getOrNull(number)
 
     infix fun String?.shouldEqual(resource: String) {
         if (this == null)
@@ -49,6 +50,26 @@ abstract class AbstractApiImplTest {
         else
             this shouldEqualSpecifiedJson resource.resource
     }
+
+    infix fun List<String>.shouldEqual(resource: String) =
+        joinToString(prefix = "[", postfix = "]") shouldEqualSpecifiedJson resource.resource
+
+    infix fun String?.shouldEqualGraphQlQuery(resource: String) {
+        if (this == null)
+            error("GraphQL request is null")
+        else
+            graphQlQuery.normalizedWhitespace shouldBe resource.resource.graphQlQuery.normalizedWhitespace
+    }
+
+    private val String.graphQlQuery
+        get() = objectMapper
+            .readTree(this)
+            .findValue("query")
+            ?.asText()
+            ?: error("Fant ikke GraphQL query: $this")
+
+    private val String.normalizedWhitespace
+        get() = trim().replace(Regex("\\s+"), " ")
 
     private val String.resource
         get() = object {}

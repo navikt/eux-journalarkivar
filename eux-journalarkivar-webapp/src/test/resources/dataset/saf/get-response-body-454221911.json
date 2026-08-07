@@ -1,0 +1,37 @@
+{
+  "data": {
+    "tilknyttedeJournalposter": [
+      {
+        "journalpostId": "453802643",
+        "journalstatus": "JOURNALFOERT",
+        "journalposttype": "I",
+        "eksternReferanseId": "1444523_aa7d09fc470c4b86af9d315d12f5a3ad_1",
+        "dokumenter": [
+          {
+            "dokumentInfoId": "454221911",
+            "tittel": "1",
+            "brevkode": "1"
+          }
+        ],
+        "tilleggsopplysninger": [
+          {
+            "nokkel": "rinaSakId",
+            "verdi": "1444523"
+          }
+        ],
+        "sak": {
+          "tema": "PEN",
+          "fagsakId": "1122334455",
+          "fagsaksystem": "PP01",
+          "arkivsaksnummer": null,
+          "arkivsaksystem": null,
+          "sakstype": "FAGSAK"
+        },
+        "bruker": {
+          "id": "12345678901",
+          "type": "FNR"
+        }
+      }
+    ]
+  }
+}

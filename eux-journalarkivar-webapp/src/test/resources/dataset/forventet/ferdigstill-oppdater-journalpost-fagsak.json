@@ -1,0 +1,12 @@
+{
+  "tema": "PEN",
+  "bruker": {
+    "id": "12345678901",
+    "idType": "FNR"
+  },
+  "sak": {
+    "sakstype": "FAGSAK",
+    "fagsaksystem": "PP01",
+    "fagsakId": "1122334455"
+  }
+}

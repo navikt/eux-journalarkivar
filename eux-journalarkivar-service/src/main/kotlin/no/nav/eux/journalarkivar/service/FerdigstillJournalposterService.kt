@@ -82,23 +82,32 @@ class FerdigstillJournalposterService(
             ?.firstOrNull { it erSammeSedSom this }
             ?: throw RuntimeException("Fant ikke dokument i nav rinasak")
         mdc(sedType = dokument.sedType, dokumentInfoId = dokument.dokumentInfoId)
-        ferdigstillJournalpost(navRinasak, dokument.dokumentInfoId)
-        this.settStatusTil(JOURNALFOERT)
+        val journalstatus = utledJournalstatus(navRinasak, dokument.dokumentInfoId)
+        settStatusTil(journalstatus)
     }
 
-    fun EuxSedJournalstatus.ferdigstillJournalpost(
+    fun utledJournalstatus(
         navRinasak: EuxNavRinasak,
         dokumentInfoId: String
-    ) {
+    ): EuxSedJournalstatus.Status {
         val journalpost = safClient
             .firstTilknyttetJournalpostOrNull(dokumentInfoId)
             ?: throw RuntimeException("Fant ikke journalpost for dokumentInfoId")
         mdc(journalpostId = journalpost.journalpostId)
         log.debug { "Journalpost har status ${journalpost.journalstatus}" }
-        when {
-            journalpost.journalstatus.erJournalfoert -> log.info { "Journalpost er allerede journalført" }
-            journalpost.journalstatus == SafJournalstatus.FEILREGISTRERT -> log.info { "Journalpost er feilregistrert"}
-            else -> journalpost.ferdigstillJournalpost(navRinasak)
+        return when {
+            journalpost.journalstatus.erJournalfoert -> {
+                log.info { "Journalpost er allerede journalført" }
+                JOURNALFOERT
+            }
+            journalpost.journalstatus == SafJournalstatus.FEILREGISTRERT -> {
+                log.info { "Journalpost er feilregistrert" }
+                FEILREGISTRERT
+            }
+            else -> {
+                journalpost.ferdigstillJournalpost(navRinasak)
+                JOURNALFOERT
+            }
         }
     }
 

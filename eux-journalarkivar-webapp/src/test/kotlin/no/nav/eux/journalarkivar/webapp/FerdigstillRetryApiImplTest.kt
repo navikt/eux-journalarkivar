@@ -1,40 +1,39 @@
 package no.nav.eux.journalarkivar.webapp
 
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
+import no.nav.eux.journalarkivar.webapp.common.arkivarprosessUrl
 import no.nav.eux.journalarkivar.webapp.common.token
+import no.nav.eux.journalarkivar.webapp.mock.sedJournalstatus
 import org.junit.jupiter.api.Test
 
 class FerdigstillRetryApiImplTest : AbstractApiImplTest() {
 
     @Test
-    fun `ferdigstill retry - FEILET_FERDIGSTILL item fails again and becomes KORRUPT`() {
-        restTestClient
-            .post()
-            .uri("/api/v1/arkivarprosess/ferdigstill/execute")
-            .header("Authorization", "Bearer ${mockOAuth2Server.token}")
-            .exchange()
-        println("Følgende requests ble utført:")
-        requestBodies.forEach { println("Path: ${it.key}, body: ${it.value}") }
-        val putBodies = requestBodies["/api/v1/sed/journalstatuser"]
-        putBodies shouldNotBe null
-        val korruptPut = putBodies!!.firstOrNull { it.contains("KORRUPT") }
-        korruptPut shouldNotBe null
-        korruptPut!! shouldEqual "/dataset/forventet/retry-ferdigstill-korrupt.json"
-        korruptPut shouldContain "feilmelding"
+    fun `POST arkivarprosess ferdigstill - ukjent sed feiler, settes til feilet ferdigstill - 204`() {
+        ferdigstillJournalposter()
+
+        val feiletPut = sedJournalstatusPut("FEILET_FERDIGSTILL")
+        feiletPut shouldEqual "/dataset/forventet/ferdigstill-feilet.json"
+        feiletPut shouldContain "/api/v1/rinasaker/9999999"
     }
 
     @Test
-    fun `ferdigstill retry - happy path items still get JOURNALFOERT`() {
+    fun `POST arkivarprosess ferdigstill - feilet ferdigstill feiler igjen, settes til korrupt - 204`() {
+        ferdigstillJournalposter()
+
+        val korruptPut = sedJournalstatusPut("KORRUPT")
+        korruptPut shouldEqual "/dataset/forventet/retry-ferdigstill-korrupt.json"
+        korruptPut shouldContain "/api/v1/rinasaker/9999999"
+    }
+
+    private fun sedJournalstatusPut(journalstatus: String) =
+        "/api/v1/sed/journalstatuser".requests.single { it.sedJournalstatus == journalstatus }
+
+    private fun ferdigstillJournalposter() =
         restTestClient
             .post()
-            .uri("/api/v1/arkivarprosess/ferdigstill/execute")
+            .uri(arkivarprosessUrl, "ferdigstill")
             .header("Authorization", "Bearer ${mockOAuth2Server.token}")
             .exchange()
-        val putBodies = requestBodies["/api/v1/sed/journalstatuser"]
-        putBodies shouldNotBe null
-        val journalfoertCount = putBodies!!.count { it.contains("JOURNALFOERT") }
-        (journalfoertCount > 0) shouldBe true
-    }
+            .expectStatus().isNoContent
 }
