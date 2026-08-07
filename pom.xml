@@ -28,6 +28,7 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tomcat.version>11.0.24</tomcat.version>
+        <netty.version>4.2.16.Final</netty.version>
     </properties>
 
     <scm>
@@ -35,5 +36,17 @@
         <developerConnection>scm:git:https://github.com/navikt/eux-journalarkivar.git</developerConnection>
         <url>https://github.com/navikt/eux-journalarkivar.git</url>
     </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
