@@ -1,0 +1,12 @@
+.git
+.github
+.idea
+*.iml
+target/*
+!eux-journalarkivar-webapp/target/eux-journalarkivar.jar
+src/test
+*.md
+docker-compose*.yml
+.env*
+.dockerignore
+Dockerfile
