@@ -40,6 +40,7 @@ Noter:
 - **Finnes utdaterte `org.lz4:lz4-java`-eksklusjoner?** → fjernes.
 - **Postgresql-driverversjon** (`org.postgresql:postgresql` i `dependency:tree`) → skal opp til `42.7.13` (se Oppgave 5).
 - **Netty-versjon** (`io.netty:netty-*` i `dependency:tree`) → skal opp til `4.2.16.Final` (se Oppgave 6). Netty er som regel transitivt (f.eks. via reactor-netty/grpc) og BOM-styrt — samme import-scope-mekanikk som Tomcat/postgresql.
+- **Jackson 2-modulversjoner** (`com.fasterxml.jackson.*` i `dependency:tree`) → alle skal være `2.22.1`. Selv med parent-pom 2.0.20 kan `jackson-module-kotlin`, `jackson-datatype-jdk8` og `jackson-module-parameter-names` bli hengende på eldre versjon (f.eks. 2.21.4) fra Spring Boot-BOM (se Oppgave 7).
 - **Har `build.yaml` allerede en `permissions`-blokk?** → hvis den er bred write og jobben kun bygger/tester, skal den erstattes med read-only (se Oppgave 2).
 
 ---
@@ -51,8 +52,13 @@ Noter:
 ### Endringer i `pom.xml`
 1. **parent-pom** `<version>…</version>` → **`2.0.20`**.
    - Parent 2.0.20 leverer automatisk (verifisert): Jackson 3 (`tools.jackson`) = **3.2.1**,
-     Jackson 2 (`com.fasterxml.jackson`) = **2.22.1**, `jackson-annotations` = **2.22**.
-   - Ingen lokale Jackson-properties trengs (arves via parent-BOM).
+     Jackson 2 (`com.fasterxml.jackson`) core/databind = **2.22.1**, `jackson-annotations` = **2.22**.
+   - ⚠️ **Kjent felle (verifisert i eux-journalarkivar):** Selv om parent-pom 2.0.20 pinner
+     `jackson-databind`/`jackson-core` til 2.22.1, kan Jackson 2-*moduler* som
+     `jackson-module-kotlin`, `jackson-datatype-jdk8` og `jackson-module-parameter-names` bli
+     hengende på en eldre versjon (f.eks. 2.21.4) fra Spring Boot-BOM via import-scope. Verifiser
+     alltid med `dependency:tree` (se Oppgave 7). Hvis blandede versjoner, legg til
+     `jackson-bom`-import som pinner hele familien konsistent.
 2. **Tomcat** (kun hvis lokal property finnes): `<tomcat.version>` → **`11.0.24`**.
    Parent styrer *ikke* Tomcat, så property beholdes.
    - ⚠️ **Kjent felle (verifisert i eux-person-oppdatering):** Hvis parent-pom importerer Spring
@@ -287,6 +293,56 @@ Commit-mal: `chore(deps): bump netty to 4.2.16.Final`
 
 ---
 
+## Oppgave 7 — Align Jackson 2-modulversjoner til 2.22.1  → egen grein + PR
+
+**Grein:** `fix/align-jackson2-versions` (fra `main`).
+
+Selv med parent-pom 2.0.20 kan Jackson 2-*moduler* bli hengende på eldre versjon fra Spring
+Boot-BOM (import-scope). `jackson-databind`/`jackson-core` kan være 2.22.1 mens
+`jackson-module-kotlin`, `jackson-datatype-jdk8` og `jackson-module-parameter-names` forblir
+2.21.4 — blandede versjoner innenfor samme familie.
+
+### Discovery (kjør først)
+```bash
+mvn -s .github/settings.xml dependency:tree -DoutputFile=/tmp/dtree.txt
+grep -i "com.fasterxml.jackson" /tmp/dtree.txt | sort -u
+```
+Er alle `com.fasterxml.jackson:*` allerede på 2.22.1 (bortsett fra `jackson-annotations` som
+legitimt er på `2.22`) → ingen handling (hopp over oppgaven).
+
+### Endringer i `pom.xml`
+1. Legg til property: `<jackson-2-bom.version>2.22.1</jackson-2-bom.version>`.
+2. Importer `jackson-bom` **øverst** i `dependencyManagement` (før Spring Boot-BOM vinner):
+   ```xml
+   <dependencyManagement>
+     <dependencies>
+       <dependency>
+         <groupId>com.fasterxml.jackson</groupId>
+         <artifactId>jackson-bom</artifactId>
+         <version>${jackson-2-bom.version}</version>
+         <type>pom</type>
+         <scope>import</scope>
+       </dependency>
+       <!-- eventuelle andre BOM-imports etter -->
+     </dependencies>
+   </dependencyManagement>
+   ```
+   - ⚠️ **Import-rekkefølge er avgjørende:** `jackson-bom` må stå *før* Spring Boot-BOM i
+     `dependencyManagement` for å vinne import-scope-konflikten. Rekkefølge innad i
+     `dependencyManagement` bestemmer prioritet.
+
+### Verifisering
+```bash
+mvn -s .github/settings.xml dependency:tree -DoutputFile=/tmp/dtree.txt
+grep -i "com.fasterxml.jackson" /tmp/dtree.txt | sort -u
+```
+Forvent: alle `com.fasterxml.jackson:*` på `2.22.1` (`jackson-annotations` på `2.22` — korrekt,
+eget versjonsskjema). Ingen `2.21.x` igjen.
+
+Commit-mal: `chore(deps): pin jackson-bom to 2.22.1 to align all jackson2 modules`
+
+---
+
 ## Sjekkliste per repo
 
 - [ ] `bump/parent-pom-2.0.20` — pom endret, dependency:tree verifisert, PR opprettet
@@ -294,6 +350,7 @@ Commit-mal: `chore(deps): bump netty to 4.2.16.Final`
 - [ ] `chore/align-dockerfile` — Dockerfile + .dockerignore, PR opprettet
 - [ ] `bump/postgresql-42.7.13` — driver pinnet til 42.7.13, dependency:tree verifisert, PR opprettet
 - [ ] `bump/netty-4.2.16` — netty pinnet til 4.2.16.Final, dependency:tree verifisert, PR opprettet
+- [ ] `fix/align-jackson2-versions` — jackson-bom pinnet til 2.22.1, dependency:tree verifisert, PR opprettet
 - [ ] Utdaterte Dependabot-PR-er lukket
 - [ ] Alle PR-er lenket/rapportert tilbake
 
