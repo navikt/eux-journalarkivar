@@ -32,7 +32,7 @@
         <jackson-2-bom.version>2.22.1</jackson-2-bom.version>
         <httpcore5.version>5.4.3</httpcore5.version>
         <httpclient5.version>5.6.4</httpclient5.version>
-        <log4j.version>2.25.5</log4j.version>
+        <log4j.version>2.26.1</log4j.version>
     </properties>
 
     <scm>
