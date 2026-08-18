@@ -30,6 +30,9 @@
         <tomcat.version>11.0.24</tomcat.version>
         <netty.version>4.2.16.Final</netty.version>
         <jackson-2-bom.version>2.22.1</jackson-2-bom.version>
+        <httpcore5.version>5.4.3</httpcore5.version>
+        <httpclient5.version>5.6.4</httpclient5.version>
+        <log4j.version>2.25.5</log4j.version>
     </properties>
 
     <scm>
@@ -54,7 +57,78 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- CVE-2026-49844: log4j -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- CVE-2026-54399 / CVE-2026-54428: httpcore5 + httpcore5-h2 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5</artifactId>
+                <version>${httpcore5.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5-h2</artifactId>
+                <version>${httpcore5.version}</version>
+            </dependency>
+            <!-- CVE-2026-64607: httpclient5 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>${httpclient5.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ban-httpcomponents-cve</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>org.apache.httpcomponents.core5:httpcore5:(,5.4.3)</exclude>
+                                        <exclude>org.apache.httpcomponents.core5:httpcore5-h2:(,5.4.3)</exclude>
+                                        <exclude>org.apache.httpcomponents.client5:httpclient5:(,5.6.4)</exclude>
+                                    </excludes>
+                                    <message>httpcore5/httpcore5-h2 &lt; 5.4.3 (CVE-2026-54399/54428) og httpclient5 &lt; 5.6.4 (CVE-2026-64607) er bannlyst.</message>
+                                </bannedDependencies>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>ban-log4j-cve</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>org.apache.logging.log4j:*:(,2.25.5)</exclude>
+                                    </excludes>
+                                    <message>log4j &lt; 2.25.5 er sårbar (CVE-2026-49844) og er bannlyst.</message>
+                                </bannedDependencies>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
